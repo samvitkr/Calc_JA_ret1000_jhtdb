@@ -27,7 +27,7 @@ dkz=kz(2)-kz(1);
 load('bsplinedata.mat');
 % load('JHTDB_RET1000.mat');
 % load('spec_conv_2D.mat');
-m=matfile('spec_conv_2D_indy.mat','Writable',true);
+m=matfile('spec_conv_2D_indy2.mat','Writable',true);
 %m.jloc=[ 38;53;75;92;106;119;172 ];
 [Kx,Kz]=meshgrid(kx,kz);
 Kx=Kx';
@@ -59,9 +59,9 @@ pscm=real(pscm(1:Nx/2,1:Nz/2,:));
 
 pscfull=zeros(Nx,Nz);
 
-mw=matfile('smooth_2d_spectra_indy.mat','Writable',true);
+mw=matfile('smooth_2d_spectra_indy2.mat','Writable',true);
 
-winmax=7;
+winmax=3;
 window=winmax;
 %mw.winmax=winmax;
 wconv=zeros(winmax+Nx/2,winmax+Nz/2,njl);

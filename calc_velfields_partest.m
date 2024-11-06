@@ -1,5 +1,10 @@
 %%
 clear
+numWorkers = 192; % Use 24 processors on the current node
+
+% Start the parallel pool with the specified number of workers
+parpool('local', numWorkers);
+
 %load('velfield.mat')
 nu=5e-5;
 %n=size(ufield);
@@ -41,7 +46,7 @@ nproc=8;
 nzproc=Nz/nproc;
 nt=6;
 tstart=21;
-tend=25;
+tend=21;
 proc=1
 
 ufield=single(zeros(Ny,Nx,Nz/nproc));
@@ -69,8 +74,18 @@ npoints = Nx*Ny;
 for time=tstart:tend
 
 time
-	for k =1:nzproc
+	parfor k =1:nzproc
+	ufieldslice = zeros(Ny,Nx);
+vfieldslice = zeros(Ny,Nx);
+wfieldslice = zeros(Ny,Nx);
 	    k
+	    pointset=[];
+	for j =1:Ny
+    	p2 = xp*0+yp(j);
+    	points = [p1;p2;p3];
+    	pointset = [ pointset,points];
+	end
+	npoints = Nx*Ny;
 	pointset(3,:)=zp((proc-1)*nzproc+k);
 	tic
 	vel =  getVelocity (authkey, dataset, time, Lag8, PCHIPInt, npoints, pointset);
@@ -97,7 +112,7 @@ time
  mn.vfield=single(vfield);
  mn.wfield=single(wfield);
 end
-
+delete(gcp('nocreate'));
 
 
 %    kefieldslice=0.5*(ufieldslice.^2 + vfieldslice.^2 +wfieldslice.^2);

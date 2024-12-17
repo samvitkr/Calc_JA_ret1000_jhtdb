@@ -1,0 +1,21 @@
+
+Currently Loaded Modules:
+  1) gcc/9.3.0       3) slurm/19.05.7   5) lua/5.4.4       7) git/2.28.0
+  2) openmpi/3.1.6   4) lmod/8.7.24     6) helpers/0.1.1   8) standard/2020.10
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2021 The MathWorks, Inc.
+             R2021a Update 4 (9.10.0.1710957) 64-bit (glnxa64)
+                                July 1, 2021
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+{Error using load
+Unable to read file 'bsplinedata.mat'. No such file or directory.
+
+Error in calc_velfields_1 (line 21)
+load('bsplinedata.mat')
+} 
+matlab exit code: 0

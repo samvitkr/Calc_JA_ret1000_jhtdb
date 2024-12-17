@@ -18,7 +18,7 @@ Lz = 3*pi;
 xp = [0:Nx-1]*Lx/(Nx);
 %kz = 2*(pi/Lz)*[0:Nz/2-1, 0, -Nz/2+1:-1];
 zp=  [0:1:Nz-1]*Lz/(Nz);
-load('bsplinedata.mat')
+load('../data/bsplinedata.mat')
 %C0= colmat0 ;
 %C1= colmat1 ;
 %C2= colmat2 ;
@@ -36,17 +36,18 @@ Lag4   = 'Lag4'; % 4th order Lagrangian interpolation in space
 Lag6   = 'Lag6'; % 6th order Lagrangian interpolation in space
 Lag8   = 'Lag8'; % 8th order Lagrangian interpolation in space
 
+%nproc=6;
 nproc=6;
-nt=3;
-tstart=21;
-tend=25;
+nzproc=Nz/nproc;
+nt=6;
+tstart=1;
+tend=20;
 proc=4
 
 ufield=single(zeros(Ny,Nx,Nz/nproc));
 vfield=ufield;
 wfield=ufield;
 
-%
 ufieldslice = zeros(Ny,Nx);
 vfieldslice = zeros(Ny,Nx);
 wfieldslice = zeros(Ny,Nx);
@@ -68,75 +69,42 @@ npoints = Nx*Ny;
 for time=tstart:tend
 
 time
-	for k =1:(Nz/nproc)
-	    k
-	pointset(3,:)=zp((proc-1)*192+k);
-	tic
-	vel =  getVelocity (authkey, dataset, time, Lag8, PCHIPInt, npoints, pointset);
-	toc
-	%toc
-	    vel1 =  vel(1,:);
-	    vel2 =  vel(2,:);
-	    vel3 =  vel(3,:);
-	    for j =1:Ny
-	        ufieldrow = vel1( (j-1)*Nx+1:j*Nx );
-	        vfieldrow = vel2( (j-1)*Nx+1:j*Nx );
-	        wfieldrow = vel3( (j-1)*Nx+1:j*Nx );
-	        ufieldslice(j,:)=ufieldrow;
-	        vfieldslice(j,:)=vfieldrow;
-	        wfieldslice(j,:)=wfieldrow;
-	    end
+	for k =1:nzproc
+		k
+		pointset(3,:)=zp((proc-1)*nzproc+k);
+%		tic
+%		vel =  getVelocity (authkey, dataset, time, Lag8, PCHIPInt, npoints, pointset);
+%		toc
+		%toc
+		success=false;
+        	while ~success
+        		try
+        		vel =  getVelocity (authkey, dataset, time, Lag8, PCHIPInt, npoints, pointset);
+        		success = true;
+        		fprintf('successful for k %d \n',k);
+        		catch ME
+        		fprintf('Retrying for k %d \n',k);
+        		pause(5)
+        		end
+        	end
+		vel1 =  vel(1,:);
+		vel2 =  vel(2,:);
+		vel3 =  vel(3,:);
+		for j =1:Ny
+		    ufieldrow = vel1( (j-1)*Nx+1:j*Nx );
+		    vfieldrow = vel2( (j-1)*Nx+1:j*Nx );
+		    wfieldrow = vel3( (j-1)*Nx+1:j*Nx );
+		    ufieldslice(j,:)=ufieldrow;
+		    vfieldslice(j,:)=vfieldrow;
+		    wfieldslice(j,:)=wfieldrow;
+		end
 		ufield(:,:,k)=ufieldslice(:,:);
 		vfield(:,:,k)=vfieldslice(:,:);
 		wfield(:,:,k)=wfieldslice(:,:);
 	end
- fn=sprintf("velfield_%02d_%03d.mat",proc,time);
+ fn=sprintf("../data/velfield_%02d_%03d.mat",proc,time);
  mn=matfile(fn,'Writable',true);
  mn.ufield=single(ufield);
  mn.vfield=single(vfield);
  mn.wfield=single(wfield);
 end
-%    kefieldslice=0.5*(ufieldslice.^2 + vfieldslice.^2 +wfieldslice.^2);
-%    
-%    %%
-%        fke(:,:)=fft(kefieldslice(:,:).').';
-%        fu(:,:)=fft(ufieldslice(:,:).').';
-%        fv(:,:)=fft(vfieldslice(:,:).').';
-%        fw(:,:)=fft(wfieldslice(:,:).').';
-%        dfke(:,:)=(fke(:,:)).*(1i*kx);
-%        dfu(:,:)=(fu(:,:)).*(1i*kx);
-%        dfv(:,:)=(fv(:,:)).*(1i*kx);
-%        dfw(:,:)=(fw(:,:)).*(1i*kx);
-%        d2fu(:,:)=(fu(:,:)).*(-kx.^2);
-%        dke(:,:) = ifft(dfke(:,:).').';
-%        dudxslice(:,:) = ifft(dfu(:,:).').';
-%        dvdxslice(:,:) = ifft(dfv(:,:).').';
-%        dwdxslice(:,:) = ifft(dfw(:,:).').';
-%        
-%        d2udx2(:,:) = ifft(d2fu(:,:).').';
-%        coeffu=C0\ufieldslice(:,:);
-%        coeffv=C0\vfieldslice(:,:);
-%        coeffw=C0\wfieldslice(:,:);
-%        dudyslice(:,:)=C1*coeffu;
-%        dvdyslice(:,:)=C1*coeffv;
-%        dwdyslice(:,:)=C1*coeffw;
-%        d2udy2(:,:)=C2*coeffu;
-%        convective_slice(:,:)=0.5*dke-(ufieldslice.*dudxslice+vfieldslice.*dudyslice);
-%        viscous_slice(:,:)= nu*( d2udx2+d2udy2 );    
-%%%
-%toc
-%mvel.ufield(:,:,k)=single(ufieldslice);
-%mvel.vfield(:,:,k)=single(vfieldslice);
-%mvel.wfield(:,:,k)=single(wfieldslice);
-%mt.convective(:,:,k)=mt.convective(:,:,k)+single(convective_slice);
-%mt.viscous(:,:,k)=mt.viscous(:,:,k)+single(viscous_slice);
-%mvelg.dudx(:,:,k)=single(dudxslice);
-%mvelg.dvdx(:,:,k)=single(dvdxslice);
-%mvelg.dwdx(:,:,k)=single(dwdxslice);
-%mvelg.dudy(:,:,k)=single(dudyslice);
-%mvelg.dvdy(:,:,k)=single(dvdyslice);
-%mvelg.dwdy(:,:,k)=single(dwdyslice);
-%toc
-%
-
- 

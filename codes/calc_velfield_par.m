@@ -1,6 +1,6 @@
 %%
 clear
-numWorkers = 4; % Use 48 processors on the current node
+numWorkers = 6; % Use 48 processors on the current node
 
 % Start the parallel pool with the specified number of workers
 parpool('local', numWorkers);
@@ -45,8 +45,8 @@ Lag8   = 'Lag8'; % 8th order Lagrangian interpolation in space
 nproc=Nz/numWorkers;
 nzproc=numWorkers;
 %nt=6;
-tstart=1;
-tend=1;
+tstart=4;
+tend=5;
 %%
 p1 = xp;
 p3 = xp*0;
@@ -69,7 +69,19 @@ vfieldslice = zeros(Ny,Nx);
 wfieldslice = zeros(Ny,Nx);
 for time=tstart:tend
 	time
-	for proc=1:nproc
+	procstart=1;
+	if(time==3)procstart=184;
+	end
+	fn=sprintf("../data/velfieldpar_%02d.mat",time);
+        mn=matfile(fn,'Writable',true);
+        mn.ufield=single(zeros(Ny,Nx,Nz));
+        mn.vfield=single(zeros(Ny,Nx,Nz));
+        mn.wfield=single(zeros(Ny,Nx,Nz));
+	mn.procstart=procstart;
+
+	for proc=procstart:nproc
+		kstart=(proc-1)*nzproc+1;
+		kend=proc*nzproc;
 		proc
 		parfor k =1:nzproc
 			ufieldslice = zeros(Ny,Nx);
@@ -114,12 +126,16 @@ for time=tstart:tend
 			wfield(:,:,k)=wfieldslice(:,:);
 	%		pause(300)
 		end
-	 	fn=sprintf("../data/velfieldpar_%02d_%03d.mat",proc,time);
-	 	mn=matfile(fn,'Writable',true);
-	 	mn.ufield=single(ufield);
-	 	mn.vfield=single(vfield);
-	 	mn.wfield=single(wfield);
+	%	fn=sprintf("../data/velfieldpar_%02d_%03d.mat",proc,time);
+	% 	mn=matfile(fn,'Writable',true);
+	 	mn.ufield(:,:,kstart:kend)=single(ufield);
+	 	mn.vfield(:,:,kstart:kend)=single(vfield);
+	 	mn.wfield(:,:,kstart:kend)=single(wfield);
+		procstart=mod(proc,nproc)+1
+		mn.procstart=procstart;
 	end
+	tstart=tstart+1;
+	mn.tstart=tstart;
 end
 
 delete(gcp('nocreate'));

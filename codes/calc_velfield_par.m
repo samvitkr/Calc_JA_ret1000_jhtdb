@@ -45,8 +45,8 @@ Lag8   = 'Lag8'; % 8th order Lagrangian interpolation in space
 nproc=Nz/numWorkers;
 nzproc=numWorkers;
 %nt=6;
-tstart=4;
-tend=5;
+tstart=5;
+tend=7;
 %%
 p1 = xp;
 p3 = xp*0;
@@ -70,7 +70,7 @@ wfieldslice = zeros(Ny,Nx);
 for time=tstart:tend
 	time
 	procstart=1;
-	if(time==3)procstart=184;
+	if(time==5)procstart=127;
 	end
 	fn=sprintf("../data/velfieldpar_%02d.mat",time);
         mn=matfile(fn,'Writable',true);

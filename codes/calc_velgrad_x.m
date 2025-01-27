@@ -9,20 +9,20 @@ kx = 2*(pi/Lx)*[0:Nx/2-1, 0, -Nx/2+1:-1];
 xp = [0:Nx-1]*Lx/(Nx);
 kz = 2*(pi/Lz)*[0:Nz/2-1, 0, -Nz/2+1:-1];
 zp=  [0:1:Nz-1]*Lz/(Nz);
-load('bsplinedata.mat')
+load('../data/bsplinedata.mat')
 C0= colmat0 ;
 C1= colmat1 ;
 C2= colmat2 ;
 yp = yv;
-nproc=6;
-nzproc=Nz/nproc;
-nt=3;
-tstart=33;
-tend=35;
-kstart=zeros(nproc,1);
-for proc=1:nproc
-   kstart(proc)=(proc-1)*nzproc;
-end
+%nproc=6;
+%nzproc=Nz/nproc;
+nt=4;
+tstart=1;
+tend=4;
+%kstart=zeros(nproc,1);
+%for proc=1:nproc
+%   kstart(proc)=(proc-1)*nzproc;
+%end
 
 dudx=single(zeros(Ny,Nx,Nz));
 dvdx=single(zeros(Ny,Nx,Nz));
@@ -41,14 +41,15 @@ d2udx2=single(zeros(Ny,Nx,Nz));
 %dwdz=single(zeros(Ny,Nx,Nz));
 
 for time=tstart:tend
-	fvel=sprintf("vel_%03d.mat",time)
-	mv=matfile(fvel);
+%	fvel=sprintf("vel_%03d.mat",time)
+	fvel=sprintf("../data/velfieldpar_%02d.mat",time)
+	mv=matfile(fvel)
 
 	for k =1:Nz
 	k	
-		ufieldslice=mv.u(:,:,k);
-		vfieldslice=mv.v(:,:,k);
-		wfieldslice=mv.w(:,:,k);
+		ufieldslice=mv.ufield(:,:,k);
+		vfieldslice=mv.vfield(:,:,k);
+		wfieldslice=mv.wfield(:,:,k);
 
 		fu(:,:)=fft(ufieldslice(:,:).').';
         	fv(:,:)=fft(vfieldslice(:,:).').';
@@ -67,7 +68,7 @@ for time=tstart:tend
 
         	d2udx2(:,:,k) = ifft(d2fu(:,:).').';
 	end
-	fvelg=sprintf("velgradx_%03d.mat",time)
+	fvelg=sprintf("../data/velgrad_%03d.mat",time)
 	mvg=matfile(fvelg,'Writable',true);
 	mvg.dudx=single(dudx);
 	mvg.dvdx=single(dvdx);

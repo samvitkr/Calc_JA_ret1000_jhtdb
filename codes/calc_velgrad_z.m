@@ -68,7 +68,7 @@ for time=tstart:tend
 
         	d2udz2(:,i,:) = ifft(d2fu(:,:).').';
 	end
-	fvelg=sprintf("../data/velgrad_%03d.mat",time)
+	fvelg=sprintf("../data/velgradz_%03d.mat",time)
 	mvg=matfile(fvelg,'Writable',true);
 	mvg.dudz=single(dudz);
 	mvg.dvdz=single(dvdz);

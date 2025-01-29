@@ -61,7 +61,7 @@ for time=tstart:tend
 		d2udy2(:,:,k)=C2*coeffu;
 
 	end
-	fvelg=sprintf("../data/velgrad_%03d.mat",time)
+	fvelg=sprintf("../data/velgrady_%03d.mat",time)
 	mvg=matfile(fvelg,'Writable',true);
 	mvg.dudy=single(dudy);
 	mvg.dvdy=single(dvdy);

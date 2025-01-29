@@ -40,8 +40,8 @@ Lag8   = 'Lag8'; % 8th order Lagrangian interpolation in space
 nproc=6;
 nzproc=Nz/nproc;
 nt=6;
-tstart=1;
-tend=20;
+tstart=5;
+tend=5;
 proc=1
 
 ufield=single(zeros(Ny,Nx,Nz/nproc));
@@ -77,16 +77,16 @@ time
 %		toc
 		%toc
 		success=false;
-        	while ~success
-        		try
+        	%while ~success
+        	%	try
         		vel =  getVelocity (authkey, dataset, time, Lag8, PCHIPInt, npoints, pointset);
-        		success = true;
-        		fprintf('successful for k %d \n',k);
-        		catch ME
-        		fprintf('Retrying for k %d \n',k);
-        		pause(5)
-        		end
-        	end
+        	%	success = true;
+        	%	fprintf('successful for k %d \n',k);
+        	%	catch ME
+        	%	fprintf('Retrying for k %d \n',k);
+        	%	pause(5)
+        	%	end
+        	%end
 		vel1 =  vel(1,:);
 		vel2 =  vel(2,:);
 		vel3 =  vel(3,:);

@@ -83,7 +83,8 @@ for time=tstart:tend
 		kstart=(proc-1)*nzproc+1;
 		kend=proc*nzproc;
 		proc
-		parfor k =1:nzproc
+%		parfor k =1:nzproc
+		for k =1:nzproc
 			ufieldslice = zeros(Ny,Nx);
 			vfieldslice = zeros(Ny,Nx);
 			wfieldslice = zeros(Ny,Nx);

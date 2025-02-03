@@ -1,0 +1,6 @@
+mx=matfile('../data/velgradx_005.mat')
+my=matfile('../data/velgrady_005.mat')
+mz=matfile('../data/velgradz_005.mat')
+size(mx.dvdx)
+size(my.dvdy)
+size(mz.dvdz)

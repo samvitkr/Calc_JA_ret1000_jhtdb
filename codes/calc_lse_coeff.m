@@ -1,10 +1,10 @@
 clear all
 clc
 clear
-numWorkers = 4; % Use 48 processors on the current node
+%numWorkers = 4; % Use 48 processors on the current node
 
 % Start the parallel pool with the specified number of workers
-parpool('local', numWorkers);
+%parpool('local', numWorkers);
 
 Nx=2048;
 Ny=512;
@@ -26,10 +26,10 @@ L111=zeros(Nz,Nx,Ny/2);
 L121=zeros(Nz,Nx,Ny/2);
 L131=zeros(Nz,Nx,Ny/2);
 L141=zeros(Nz,Nx,Ny/2);
-L151=zeros(Nz,Nx,Ny/2);
+%L151=zeros(Nz,Nx,Ny/2);
 
 %m=matfile(fn);
-fn=sprintf('../data/velgrad_corr_v_j_%03d.mat',jcond);
+fn=sprintf('../data/corr_v_reflect_j_%03d.mat',jcond);
 %m=matfile(fn);
 load(fn);
 %jc=j;
@@ -37,9 +37,10 @@ uij=[Rvv(1,1,jcond)];...,Rvw(1,1,jc)];...
     %Rwu(1,1,jc),Rwv(1,1,jc),Rww(1,1,jc)];
 uij=uij.';
 
-parfor j=1:Ny/2
+for j=1:Ny/2
     j
     for k=1:Nz
+	    k
         for i=1:Nx
             Rij=[Rvu(k,i,j),Rvv(k,i,j),Rvw(k,i,j),...
 		Rvdudx(k,i,j),Rvdvdx(k,i,j),Rvdwdx(k,i,j),...
@@ -74,8 +75,6 @@ mf=matfile(fn,"Writable",true);
 mf.L11=real(L11);
 mf.L21=real(L21);
 mf.L31=real(L31);
-mf.yCheb=yCheb;
-mf.j=jc;
 mf.L41=real(L41);
 mf.L51=real(L51);
 mf.L61=real(L61);

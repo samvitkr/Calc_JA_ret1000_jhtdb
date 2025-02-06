@@ -45,8 +45,8 @@ Lag8   = 'Lag8'; % 8th order Lagrangian interpolation in space
 nproc=Nz/numWorkers;
 nzproc=numWorkers;
 %nt=6;
-tstart=8;
-tend=8;
+tstart=11;
+tend=11;
 %%
 p1 = xp;
 p3 = xp*0;

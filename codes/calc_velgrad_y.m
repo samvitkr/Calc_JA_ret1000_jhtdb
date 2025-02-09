@@ -13,8 +13,8 @@ load('../data/bsplinedata.mat')
 C0= colmat0 ;
 C1= colmat1 ;
 C2= colmat2 ;
-tstart=5;
-tend=5;
+tstart=6;
+tend=10;
 yp = yv;
 %nproc=6;
 %nzproc=Nz/nproc;

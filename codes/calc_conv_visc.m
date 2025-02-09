@@ -5,8 +5,8 @@ nproc=6;
 nzproc=Nz/nproc;
 nt=3;
 nu=5e-5;
-tstart=1;
-tend=5;
+tstart=6;
+tend=10;
 for time=tstart:tend
     
 fgx=sprintf("../data/velgradx_%03d.mat",time);

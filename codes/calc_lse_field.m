@@ -3,9 +3,9 @@ clear
 %jcset=[116, 135, 187, 198, 205];
 jcond=71;
 
-mp=matfile('../data/JHTDB_RET1000.mat')
+load('../data/JHTDB_RET1000.mat')
 
-vrmsprofile=sqrt(mp.JHTDB_RET1000(:,5))./(mp.JHTDB_RET1000(end,2));
+vrmsprofile=sqrt(JHTDB_RET1000(:,5))./(JHTDB_RET1000(end,2));
 vrms=vrmsprofile(jcond)%
 
 %nx=2048;

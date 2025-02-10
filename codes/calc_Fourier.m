@@ -48,8 +48,8 @@ nf=1;
 %phivvoz=	zeros(Nz,Nx,Ny/2);
 %phivwoy=	zeros(Nz,Nx,Ny/2);
 
-tstart=2;
-tend=5;
+tstart=6;
+tend=10;
 tstep=1;
 nf=(tend-tstart)/tstep+1;
 %load('lambda_stats.mat')

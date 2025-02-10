@@ -50,7 +50,7 @@ phivvoz=	zeros(Nz,Nx,Ny/2);
 phivwoy=	zeros(Nz,Nx,Ny/2);
 
 tstart=1;
-tend=5;
+tend=10;
 tstep=1;
 nf=(tend-tstart)/tstep+1;
 %load('lambda_stats.mat')

@@ -24,7 +24,7 @@ clear colmat0 colmat1 colmat2  yv kk knots
 %Nx=512;
 %Nz=384;
 %Ny=220;
-jcond=71
+jcond=130
 jct=Ny-jcond+1
 %jc=jcond-Ny/2;
 
@@ -114,41 +114,42 @@ for time=tstart:tstep:tend
 
 end
 
-phivv=0.5*phivv./nf;
-phivu=0.5*phivu./nf;
-phivw=0.5*phivw./nf;
+%phivv=0.5*phivv./nf;
+%phivu=0.5*phivu./nf;
+%phivw=0.5*phivw./nf;
+%
+%phivdudx=0.5*phivdudx./nf;
+%phivdvdx=0.5*phivdvdx./nf;
+%phivdwdx=0.5*phivdwdx./nf;
+%phivdudy=0.5*phivdudy./nf;
+%phivdvdy=0.5*phivdvdy./nf;
+%phivdwdy=0.5*phivdwdy./nf;
+%phivdudz=0.5*phivdudz./nf;
+%phivdvdz=0.5*phivdvdz./nf;
+%phivdwdz=0.5*phivdwdz./nf;
+%phivvoz=0.5*phivvoz./nf;
+%phivwoy=0.5*phivwoy./nf;
 
-phivdudx=0.5*phivdudx./nf;
-phivdvdx=0.5*phivdvdx./nf;
-phivdwdx=0.5*phivdwdx./nf;
-phivdudy=0.5*phivdudy./nf;
-phivdvdy=0.5*phivdvdy./nf;
-phivdwdy=0.5*phivdwdy./nf;
-phivdudz=0.5*phivdudz./nf;
-phivdvdz=0.5*phivdvdz./nf;
-phivdwdz=0.5*phivdwdz./nf;
-phivvoz=0.5*phivvoz./nf;
-phivwoy=0.5*phivwoy./nf;
-
+N=(Nx*Nz)/(2*nf);
 
 fn=sprintf('../data/corr_v_reflect_j_%03d.mat',jcond);
 mf=matfile(fn,"Writable",true);
 
-mf.Rvv=ifft2(phivv*(Nz*Nx),'symmetric');
-mf.Rvu=ifft2(phivu*(Nz*Nx),'symmetric');
-mf.Rvw=ifft2(phivw*(Nz*Nx),'symmetric');
-mf.Rvdudx=ifft2(phivdudx*(Nz*Nx),'symmetric');
-mf.Rvdvdx=ifft2(phivdvdx*(Nz*Nx),'symmetric');
-mf.Rvdwdx=ifft2(phivdwdx*(Nz*Nx),'symmetric');
-mf.Rvdudy=ifft2(phivdudy*(Nz*Nx),'symmetric');
-mf.Rvdvdy=ifft2(phivdvdy*(Nz*Nx),'symmetric');
-mf.Rvdwdy=ifft2(phivdwdy*(Nz*Nx),'symmetric');
-mf.Rvdudz=ifft2(phivdudz*(Nz*Nx),'symmetric');
-mf.Rvdvdz=ifft2(phivdvdz*(Nz*Nx),'symmetric');
-mf.Rvdwdz=ifft2(phivdwdz*(Nz*Nx),'symmetric');
+mf.Rvv=ifft2((phivv*N),'symmetric');
+mf.Rvu=ifft2((phivu*N),'symmetric');
+mf.Rvw=ifft2((phivw*N),'symmetric');
+mf.Rvdudx=ifft2((phivdudx*N),'symmetric');
+mf.Rvdvdx=ifft2((phivdvdx*N),'symmetric');
+mf.Rvdwdx=ifft2((phivdwdx*N),'symmetric');
+mf.Rvdudy=ifft2((phivdudy*N),'symmetric');
+mf.Rvdvdy=ifft2((phivdvdy*N),'symmetric');
+mf.Rvdwdy=ifft2((phivdwdy*N),'symmetric');
+mf.Rvdudz=ifft2((phivdudz*N),'symmetric');
+mf.Rvdvdz=ifft2((phivdvdz*N),'symmetric');
+mf.Rvdwdz=ifft2((phivdwdz*N),'symmetric');
 %mf.Rvfx=ifft2(phivfx*(Nz*Nx),'symmetric');
-mf.Rvvoz=ifft2(phivvoz*(Nz*Nx),'symmetric');
-mf.Rvwoy=ifft2(phivwoy*(Nz*Nx),'symmetric');
+mf.Rvvoz=ifft2((phivvoz*N),'symmetric');
+mf.Rvwoy=ifft2((phivwoy*N),'symmetric');
 
 %fn=sprintf('../data/velgrad_corr_v_j_%03d.mat',jcond);
 %mf=matfile(fn,"Writable",true);

@@ -1,7 +1,7 @@
 close all
 clear
 %jcset=[116, 135, 187, 198, 205];
-jcond=71;
+jcond=41;
 Nx=2048;
 Ny=512;
 Nz=1536;
@@ -54,9 +54,9 @@ m.ld=	permute(mp.lambda2(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
 m.uu=	permute(mn.u(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
 m.vu=	permute(mn.v(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
 m.wu=	permute(mn.w(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
-m.oxu=	permute(mn.dwdy(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:)-mp.dvdz(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
-m.oyu=	permute(mn.dudz(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:)-mp.dwdx(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
-m.ozu=	permute(mn.dvdx(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:)-mp.dudy(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
+m.oxu=	permute(mn.dwdy(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:)-mn.dvdz(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
+m.oyu=	permute(mn.dudz(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:)-mn.dwdx(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
+m.ozu=	permute(mn.dvdx(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:)-mn.dudy(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
 m.lu=	permute(mn.lambda2(ncz-nbz:ncz+nbz,ncx-nbx:ncx+nbx,:),[2 1 3]);
 
 

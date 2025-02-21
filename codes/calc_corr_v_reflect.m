@@ -4,172 +4,132 @@ clear
 Nx=2048;
 Ny=512;
 Nz=1536;
-Lx=  8*pi;
-Lz = 3*pi;
-%kx = [0:Nx-1]*pi/Lx;
-%kx = 2*(pi/Lx)*[0:Nx/2-1, 0, -Nx/2+1:-1];
-%kxint=floor(kx(end));
-xp = [0:Nx-1]*Lx/(Nx);
-%kz = 2*(pi/Lz)*[0:Nz/2-1, 0, -Nz/2+1:-1];
-zp=  [0:1:Nz-1]*Lz/(Nz);
-load('../data/bsplinedata.mat')
-%C0= colmat0 ;
-%C1= colmat1 ;
-%C2= colmat2 ;
-yp = yv;
-clear colmat0 colmat1 colmat2  yv kk knots
-
-%load('../data/bsplinedata.mat')
-
-%Nx=512;
-%Nz=384;
-%Ny=220;
-jcond=130
+jcond=54
 jct=Ny-jcond+1
-%jc=jcond-Ny/2;
 
 nf=1;
-phivv=		zeros(Nz,Nx,Ny/2);
-phivu=		zeros(Nz,Nx,Ny/2);
-phivw=		zeros(Nz,Nx,Ny/2);
+phivv=		single(zeros(Nz,Nx,Ny/2));
+phivu=		single(zeros(Nz,Nx,Ny/2));
+phivw=		single(zeros(Nz,Nx,Ny/2));
 
-phivdudx=	zeros(Nz,Nx,Ny/2);
-phivdvdx=	zeros(Nz,Nx,Ny/2);
-phivdwdx=	zeros(Nz,Nx,Ny/2);
+phivdudx=	single(zeros(Nz,Nx,Ny/2));
+phivdvdx=	single(zeros(Nz,Nx,Ny/2));
+phivdwdx=	single(zeros(Nz,Nx,Ny/2));
 
-phivdudy=	zeros(Nz,Nx,Ny/2);
-phivdvdy=	zeros(Nz,Nx,Ny/2);
-phivdwdy=	zeros(Nz,Nx,Ny/2);
+phivdudy=	single(zeros(Nz,Nx,Ny/2));
+phivdvdy=	single(zeros(Nz,Nx,Ny/2));
+phivdwdy=	single(zeros(Nz,Nx,Ny/2));
 
-phivdudz=	zeros(Nz,Nx,Ny/2);
-phivdvdz=	zeros(Nz,Nx,Ny/2);
-phivdwdz=	zeros(Nz,Nx,Ny/2);
+phivdudz=	single(zeros(Nz,Nx,Ny/2));
+phivdvdz=	single(zeros(Nz,Nx,Ny/2));
+phivdwdz=	single(zeros(Nz,Nx,Ny/2));
 
-%phivfx=		zeros(Nz,Nx,Ny/2);
-phivvoz=	zeros(Nz,Nx,Ny/2);
-phivwoy=	zeros(Nz,Nx,Ny/2);
+%phivfx=	single(	zeros(Nz,Nx,Ny/2));
+phivvoz=	single(zeros(Nz,Nx,Ny/2));
+phivwoy=	single(zeros(Nz,Nx,Ny/2));
 
 tstart=1;
 tend=10;
 tstep=1;
 nf=(tend-tstart)/tstep+1;
 %load('lambda_stats.mat')
+
+j=1:Ny/2;
+jcr=j+Ny/2;
 for time=tstart:tstep:tend
+%for time=1:1
         time
         fvel=sprintf("../data/velfieldpar_%02d.mat",time);
         m=matfile(fvel)
+	vfj=single(m.vF(:,:,jcond));
+        vfj(1,1)=0;
+        vfjt=single(m.vF(:,:,jct));
+        vfjt(1,1)=0;
+	tic
+%	phivv(:,:,j)=phivv(:,:,j)+conj(vfj).*single(m.vF(1:Nz,1:Nx,j));
+%        phivu(:,:,j)=phivu(:,:,j)+conj(vfj).*single(m.uF(1:Nz,1:Nx,j));
+%        phivw(:,:,j)=phivw(:,:,j)+conj(vfj).*single(m.wF(1:Nz,1:Nx,j));
+	phivv(:,:,j)=phivv(:,:,j)+conj(vfj).*single(m.vF(1:Nz,1:Nx,j))+flip( conj(vfjt).*single(m.vF(1:Nz,1:Nx,jcr)),3);
+        phivu(:,:,j)=phivu(:,:,j)+conj(vfj).*single(m.uF(1:Nz,1:Nx,j))-flip( conj(vfjt).*single(m.uF(1:Nz,1:Nx,jcr)),3);
+        phivw(:,:,j)=phivw(:,:,j)+conj(vfj).*single(m.wF(1:Nz,1:Nx,j))-flip( conj(vfjt).*single(m.wF(1:Nz,1:Nx,jcr)),3);
+	toc
+	clear m
 
-	fvelgx=sprintf("../data/velgradx_%03d.mat",time);
+        fvelgx=sprintf("../data/velgradx_%03d.mat",time);
         mgx=matfile(fvelgx)
+%	phivdudx(:,:,j)=phivdudx(:,:,j)+conj(vfj).*single(mgx.dudxF(1:Nz,1:Nx,j));
+%       phivdvdx(:,:,j)=phivdvdx(:,:,j)+conj(vfj).*single(mgx.dvdxF(1:Nz,1:Nx,j));
+%       phivdwdx(:,:,j)=phivdwdx(:,:,j)+conj(vfj).*single(mgx.dwdxF(1:Nz,1:Nx,j));
+	phivdudx(:,:,j)=phivdudx(:,:,j)+conj(vfj).*single(mgx.dudxF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mgx.dudxF(1:Nz,1:Nx,jcr)),3);
+        phivdvdx(:,:,j)=phivdvdx(:,:,j)+conj(vfj).*single(mgx.dvdxF(1:Nz,1:Nx,j))+flip(conj(vfjt).*single(mgx.dvdxF(1:Nz,1:Nx,jcr)),3);
+        phivdwdx(:,:,j)=phivdwdx(:,:,j)+conj(vfj).*single(mgx.dwdxF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mgx.dwdxF(1:Nz,1:Nx,jcr)),3);
+	toc
+	clear mgx
 
-	fvelgy=sprintf("../data/velgrady_%03d.mat",time);
+        fvelgy=sprintf("../data/velgrady_%03d.mat",time);
         mgy=matfile(fvelgy)
-
+%	phivdudy(:,:,j)=phivdudy(:,:,j)+conj(vfj).*single(mgy.dudyF(1:Nz,1:Nx,j));
+%       phivdvdy(:,:,j)=phivdvdy(:,:,j)+conj(vfj).*single(mgy.dvdyF(1:Nz,1:Nx,j));
+%       phivdwdy(:,:,j)=phivdwdy(:,:,j)+conj(vfj).*single(mgy.dwdyF(1:Nz,1:Nx,j));
+	phivdudy(:,:,j)=phivdudy(:,:,j)+conj(vfj).*single(mgy.dudyF(1:Nz,1:Nx,j))+flip(conj(vfjt).*single(mgy.dudyF(1:Nz,1:Nx,jcr)),3);
+        phivdvdy(:,:,j)=phivdvdy(:,:,j)+conj(vfj).*single(mgy.dvdyF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mgy.dvdyF(1:Nz,1:Nx,jcr)),3);
+        phivdwdy(:,:,j)=phivdwdy(:,:,j)+conj(vfj).*single(mgy.dwdyF(1:Nz,1:Nx,j))+flip(conj(vfjt).*single(mgy.dwdyF(1:Nz,1:Nx,jcr)),3);
+	toc
+	clear mgy
+        
 	fvelgz=sprintf("../data/velgradz_%03d.mat",time);
         mgz=matfile(fvelgz)
 
-	ft=sprintf("../data/Transfer_%03d.mat",time);
+%	phivdudz(:,:,j)=phivdudz(:,:,j)+conj(vfj).*single(mgz.dudzF(1:Nz,1:Nx,j));
+%       phivdvdz(:,:,j)=phivdvdz(:,:,j)+conj(vfj).*single(mgz.dvdzF(1:Nz,1:Nx,j));
+%       phivdwdz(:,:,j)=phivdwdz(:,:,j)+conj(vfj).*single(mgz.dwdzF(1:Nz,1:Nx,j));
+
+	phivdudz(:,:,j)=phivdudz(:,:,j)+conj(vfj).*single(mgz.dudzF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mgz.dudzF(1:Nz,1:Nx,jcr)),3);
+        phivdvdz(:,:,j)=phivdvdz(:,:,j)+conj(vfj).*single(mgz.dvdzF(1:Nz,1:Nx,j))+flip(conj(vfjt).*single(mgz.dvdzF(1:Nz,1:Nx,jcr)),3);
+        phivdwdz(:,:,j)=phivdwdz(:,:,j)+conj(vfj).*single(mgz.dwdzF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mgz.dwdzF(1:Nz,1:Nx,jcr)),3);
+	toc
+	clear mgz
+
+        ft=sprintf("../data/Transfer_%03d.mat",time);
         mt=matfile(ft)
-	vfj=m.vF(:,:,jcond);
-	vfj(1,1)=0;
-	vfjt=m.vF(:,:,jct);
-        vfjt(1,1)=0;
 
-		phivv=phivv+conj(vfj).*m.vF(1:Nz,1:Nx,1:Ny/2);
-		phivu=phivu+conj(vfj).*m.uF(1:Nz,1:Nx,1:Ny/2);
-		phivw=phivw+conj(vfj).*m.wF(1:Nz,1:Nx,1:Ny/2);
+%	phivvoz(:,:,j)=phivvoz(:,:,j)+conj(vfj).*single(mt.vozF(1:Nz,1:Nx,j));
+%       phivwoy(:,:,j)=phivwoy(:,:,j)+conj(vfj).*single(mt.woyF(1:Nz,1:Nx,j));
 
-		phivv=phivv+flip(conj(vfjt).*m.vF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivu=phivu-flip(conj(vfjt).*m.uF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivw=phivw-flip(conj(vfjt).*m.wF(1:Nz,1:Nx,Ny/2+1:Ny),3);
+        phivvoz(:,:,j)=phivvoz(:,:,j)+conj(vfj).*single(mt.vozF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mt.vozF(1:Nz,1:Nx,jcr)),3);
+        phivwoy(:,:,j)=phivwoy(:,:,j)+conj(vfj).*single(mt.woyF(1:Nz,1:Nx,j))-flip(conj(vfjt).*single(mt.woyF(1:Nz,1:Nx,jcr)),3);
 
-        	phivdudx=phivdudx+conj(vfj).*mgx.dudxF(1:Nz,1:Nx,1:Ny/2);
-        	phivdvdx=phivdvdx+conj(vfj).*mgx.dvdxF(1:Nz,1:Nx,1:Ny/2);
-        	phivdwdx=phivdwdx+conj(vfj).*mgx.dwdxF(1:Nz,1:Nx,1:Ny/2);
-        	phivdudy=phivdudy+conj(vfj).*mgy.dudyF(1:Nz,1:Nx,1:Ny/2);
-        	phivdvdy=phivdvdy+conj(vfj).*mgy.dvdyF(1:Nz,1:Nx,1:Ny/2);
-        	phivdwdy=phivdwdy+conj(vfj).*mgy.dwdyF(1:Nz,1:Nx,1:Ny/2);
-        	phivdudz=phivdudz+conj(vfj).*mgz.dudzF(1:Nz,1:Nx,1:Ny/2);
-        	phivdvdz=phivdvdz+conj(vfj).*mgz.dvdzF(1:Nz,1:Nx,1:Ny/2);
-        	phivdwdz=phivdwdz+conj(vfj).*mgz.dwdzF(1:Nz,1:Nx,1:Ny/2);
-
-		phivdudx=phivdudx-flip(conj(vfjt).*mgx.dudxF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivdvdx=phivdvdx+flip(conj(vfjt).*mgx.dvdxF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivdwdx=phivdwdx-flip(conj(vfjt).*mgx.dwdxF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-
-                phivdudy=phivdudy+flip(conj(vfjt).*mgy.dudyF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivdvdy=phivdvdy-flip(conj(vfjt).*mgy.dvdyF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivdwdy=phivdwdy+flip(conj(vfjt).*mgy.dwdyF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                
-		phivdudz=phivdudz-flip(conj(vfjt).*mgz.dudzF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivdvdz=phivdvdz+flip(conj(vfjt).*mgz.dvdzF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivdwdz=phivdwdz-flip(conj(vfjt).*mgz.dwdzF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-
-		phivvoz=phivvoz+conj(vfj).*mt.vozF(1:Nz,1:Nx,1:Ny/2);
-		phivwoy=phivwoy+conj(vfj).*mt.woyF(1:Nz,1:Nx,1:Ny/2);
-
-		phivvoz=phivvoz-flip(conj(vfjt).*mt.vozF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-                phivwoy=phivwoy-flip(conj(vfjt).*mt.woyF(1:Nz,1:Nx,Ny/2+1:Ny),3);
-	%end
-
+	clear mt vfj vfjt
+	toc
 end
 
-%phivv=0.5*phivv./nf;
-%phivu=0.5*phivu./nf;
-%phivw=0.5*phivw./nf;
-%
-%phivdudx=0.5*phivdudx./nf;
-%phivdvdx=0.5*phivdvdx./nf;
-%phivdwdx=0.5*phivdwdx./nf;
-%phivdudy=0.5*phivdudy./nf;
-%phivdvdy=0.5*phivdvdy./nf;
-%phivdwdy=0.5*phivdwdy./nf;
-%phivdudz=0.5*phivdudz./nf;
-%phivdvdz=0.5*phivdvdz./nf;
-%phivdwdz=0.5*phivdwdz./nf;
-%phivvoz=0.5*phivvoz./nf;
-%phivwoy=0.5*phivwoy./nf;
 
-N=(Nx*Nz)/(2*nf);
+N=single((Nx*Nz)/(2*nf));
 
 fn=sprintf('../data/corr_v_reflect_j_%03d.mat',jcond);
-mf=matfile(fn,"Writable",true);
-
-mf.Rvv=ifft2((phivv*N),'symmetric');
-mf.Rvu=ifft2((phivu*N),'symmetric');
-mf.Rvw=ifft2((phivw*N),'symmetric');
-mf.Rvdudx=ifft2((phivdudx*N),'symmetric');
-mf.Rvdvdx=ifft2((phivdvdx*N),'symmetric');
-mf.Rvdwdx=ifft2((phivdwdx*N),'symmetric');
-mf.Rvdudy=ifft2((phivdudy*N),'symmetric');
-mf.Rvdvdy=ifft2((phivdvdy*N),'symmetric');
-mf.Rvdwdy=ifft2((phivdwdy*N),'symmetric');
-mf.Rvdudz=ifft2((phivdudz*N),'symmetric');
-mf.Rvdvdz=ifft2((phivdvdz*N),'symmetric');
-mf.Rvdwdz=ifft2((phivdwdz*N),'symmetric');
-%mf.Rvfx=ifft2(phivfx*(Nz*Nx),'symmetric');
-mf.Rvvoz=ifft2((phivvoz*N),'symmetric');
-mf.Rvwoy=ifft2((phivwoy*N),'symmetric');
-
-%fn=sprintf('../data/velgrad_corr_v_j_%03d.mat',jcond);
-%mf=matfile(fn,"Writable",true);
-%mf.Rvv=Rvv;
-%mf.Rvu=Rvu;
-%mf.Rvw=Rvw;
-%mf.yCheb=yCheb(Ny/2+1:end);
+mf=matfile(fn,"Writable",true)
+%mf=matfile('testmem.mat','Writable',true)
+%for 
+jw =1:Ny/2;
+%jw
+	mf.Rvv(1:Nz,1:Nx,jw)=ifft2(single((phivv(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivv;
+	mf.Rvu(1:Nz,1:Nx,jw)=ifft2(single((phivu(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivu;
+	mf.Rvw(1:Nz,1:Nx,jw)=ifft2(single((phivw(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivw;
+	
+	mf.Rvdudx(1:Nz,1:Nx,jw)=ifft2(single((phivdudx(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdudx;
+	mf.Rvdvdx(1:Nz,1:Nx,jw)=ifft2(single((phivdvdx(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdvdx;
+	mf.Rvdwdx(1:Nz,1:Nx,jw)=ifft2(single((phivdwdx(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdwdx;
+	
+	mf.Rvdudy(1:Nz,1:Nx,jw)=ifft2(single((phivdudy(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdudy;
+	mf.Rvdvdy(1:Nz,1:Nx,jw)=ifft2(single((phivdvdy(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdvdy;
+	mf.Rvdwdy(1:Nz,1:Nx,jw)=ifft2(single((phivdwdy(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdwdy;
+	
+	mf.Rvdudz(1:Nz,1:Nx,jw)=ifft2(single((phivdudz(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdudz;
+	mf.Rvdvdz(1:Nz,1:Nx,jw)=ifft2(single((phivdvdz(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdvdz;
+	mf.Rvdwdz(1:Nz,1:Nx,jw)=ifft2(single((phivdwdz(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivdwdz;
+	
+	mf.Rvvoz(1:Nz,1:Nx,jw)=	ifft2(single((phivvoz(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivvoz;
+	mf.Rvwoy(1:Nz,1:Nx,jw)=	ifft2(single((phivwoy(1:Nz,1:Nx,jw)*N)),'symmetric');clear phivwoy;
+%end
 mf.j=jcond;
-%
-%
-%mf.Rvdudx=Rvdudx;
-%mf.Rvdvdx=Rvdvdx;
-%mf.Rvdwdx=Rvdwdx;
-%mf.Rvdudy=Rvdudy;
-%mf.Rvdvdy=Rvdvdy;
-%mf.Rvdwdy=Rvdwdy;
-%mf.Rvdudz=Rvdudz;
-%mf.Rvdvdz=Rvdvdz;
-%mf.Rvdwdz=Rvdwdz;
-%
-%mf.Rvfx=Rvfx;
-%mf.Rvvoz=Rvvoz;
-%mf.Rvwoy=Rvwoy;
+toc

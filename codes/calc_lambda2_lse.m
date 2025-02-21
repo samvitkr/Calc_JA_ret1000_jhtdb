@@ -1,4 +1,4 @@
-jcond=71;
+jcond=41;
 fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
 

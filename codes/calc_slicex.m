@@ -15,7 +15,7 @@ nbz=180;
 x=xp(Nx/2-nbx:Nx/2+nbx);
 z=zp(Nz/2-nbz:Nz/2+nbz);
 [Z,Y]=meshgrid(z,y);
-jcond=71;
+jcond=41;
 
 fnp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 m=matfile(fnp);
@@ -24,7 +24,9 @@ fnn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
 mu=matfile(fnn);
 
 islice=nbx+1;
+%islice=nbx-25:nbx+25;
 	fx=sprintf('../data/lse_xslice_i_%03d_j_%03d.mat',islice,jcond)
+%	fx=sprintf('../data/lse_xsliceset_j_%03d.mat',jcond)
 	mx=matfile(fx,'Writable',true)
 	
 	ud=  squeeze(m.u(:,islice,:))';	

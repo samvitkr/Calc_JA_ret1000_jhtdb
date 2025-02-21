@@ -1,7 +1,7 @@
 close all
 clear
 %jcset=[116, 135, 187, 198, 205];
-jcond=71;
+jcond=41;
 Nx=2048;
 Ny=512;
 Nz=1536;

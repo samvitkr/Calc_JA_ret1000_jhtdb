@@ -1,6 +1,6 @@
 clear 
 close all
-jcond=130;
+jcond=71;
 fn=sprintf('../data/lse_eddyset_j_%03d.mat',jcond)
 x1=100;
 y1=100;
@@ -21,6 +21,8 @@ alpha=0.05;
 alpha=0.02;
 ltd=alpha*ltdm
 ltu=alpha*ltum
+ltd=-0.02;
+ltu=-0.02;
 idx=52;
 %load('eddyset_d_j_156.mat')
 %%
@@ -63,10 +65,10 @@ view(45,35);
 grid on;
 shading flat
 
-ylim([-500 500])
-xlim([-300 300])
+ylim([-600 200])
+xlim([-150 150])
 %zlim([0 200])
-zlim([0 500])
+zlim([0 250])
 c=colorbar;
 %clim([-20 20])
 %ylabel(c,"u'")
@@ -121,9 +123,9 @@ axis equal
 view(45,35)             % Smooth shading
 grid on;
 shading flat
-ylim([-500 500])
-xlim([-300 300])
-zlim([0 500])
+ylim([-300 300])
+xlim([-150 150])
+zlim([0 250])
 %clim([-0.3 0.3])
 %clim([-0.03 0.03])
 %clim([-0.2 0.2])
@@ -138,7 +140,7 @@ ylabel('$x^+$','interpreter','latex','FontSize',14)
 zlabel('$y^+$','interpreter','latex','FontSize',14)
 title('(b)')
 %%
-%    fdne=sprintf('eddy_j_%03d.fig',jcond)
-%   saveas(fd,fdne)
+    fdne=sprintf('eddy_j_%03d.fig',jcond)
+   saveas(fd,fdne)
 
 %% calculate bounding box

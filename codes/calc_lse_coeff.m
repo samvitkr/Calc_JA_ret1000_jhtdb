@@ -11,7 +11,7 @@ Ny=512;
 Nz=1536;
 Lx=  8*pi;
 Lz = 3*pi;
-jcond=41;
+jcond=105;
 
 fn=sprintf('../data/lse_coeff_j_%03d.mat',jcond);
 mf=matfile(fn,"Writable",true);

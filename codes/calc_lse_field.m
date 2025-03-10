@@ -1,7 +1,7 @@
 close all
 clear
 %jcset=[116, 135, 187, 198, 205];
-jcond=41;
+jcond=105;
 
 load('../data/JHTDB_RET1000.mat')
 

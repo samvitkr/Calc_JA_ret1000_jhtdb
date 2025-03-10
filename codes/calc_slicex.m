@@ -15,7 +15,7 @@ nbz=180;
 x=xp(Nx/2-nbx:Nx/2+nbx);
 z=zp(Nz/2-nbz:Nz/2+nbz);
 [Z,Y]=meshgrid(z,y);
-jcond=41;
+jcond=105;
 
 fnp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 m=matfile(fnp);

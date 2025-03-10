@@ -4,7 +4,7 @@ clear
 Nx=2048;
 Ny=512;
 Nz=1536;
-jcond=54
+jcond=105
 jct=Ny-jcond+1
 
 nf=1;

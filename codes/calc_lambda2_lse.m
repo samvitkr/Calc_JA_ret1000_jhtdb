@@ -2,18 +2,21 @@ jcond=71;
 %fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 %fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
 
-%m1=matfile(fvgp,'Writable',true)
-%m2=matfile(fvgn,'Writable',true)
+fvgp=sprintf("../data/conditionalp_jcond_inst_%03d.mat",jcond);
+fvgn=sprintf("../data/conditionaln_jcond_inst_%03d.mat",jcond);
 
-m1=matfile('../data/test.mat','Writable',true)
+m1=matfile(fvgp,'Writable',true)
+m2=matfile(fvgn,'Writable',true)
+
+%m1=matfile('../data/test.mat','Writable',true)
 %fvgq=[fvgp fvgn];
 for nn=1:2
 
 	switch nn
 	case 1
 		mvg=m1;
-	%case 2
-	%	mvg=m2;
+	case 2
+		mvg=m2;
 	end
 %fvg=fvgoz;
 %fvg=fvgq(nn);	

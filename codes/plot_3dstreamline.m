@@ -1,6 +1,6 @@
 clear 
 close all
-jcond=130;
+jcond=71;
 fn=sprintf('../data/lse_eddyset_j_%03d.mat',jcond)
 fn2=sprintf('./eddy_isosurf_stream_j_%03d.mat',jcond)
 x1=100;
@@ -159,10 +159,10 @@ end
 
 
 %%
-   fdne=sprintf('eddy_j_%03d.fig',jcond)
-   saveas(fd,fdne)
-%%
-save(fn2,'vertices1','indices1','faceColor1','streamlineArray1','vertices2','indices2','faceColor2','streamlineArray2')
+%    fdne=sprintf('eddy_j_%03d.fig',jcond)
+%    saveas(fd,fdne)
+% %%
+% save(fn2,'vertices1','indices1','faceColor1','streamlineArray1','vertices2','indices2','faceColor2','streamlineArray2')
 
 
 %% calculate bounding box

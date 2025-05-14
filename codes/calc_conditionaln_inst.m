@@ -13,13 +13,13 @@ Lz=3*pi;
 %xbox=0.8;
 %zbox=0.6;
 
-jcond=105;
-xbox=0.7;
-zbox=0.4;
+%jcond=105;
+%xbox=0.7;
+%zbox=0.4;
 
-%jcond=71
-%xbox=0.6;
-%zbox=0.3;
+jcond=71
+xbox=0.6;
+zbox=0.3;
 
 %jcond=54;
 %xbox=0.5;
@@ -79,8 +79,8 @@ woyn=	single(zeros(nzav,nxav,Ny/2));
 
 s=[Nz Nx];
 vjav=zeros(Nz,Nx);
-
-for time=tstart:tstep:tend
+time=tstart;
+%for time=tstart:tstep:tend
     	time
 %    fvel=sprintf("../data/velfields_%07d.mat",time);
 	fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
@@ -91,11 +91,11 @@ size(m.vfield)
     vjt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
 
     ufieldb=single(		permute(m.ufield(1:Ny/2,:,:)	,[3 2 1]));
-    ufieldt=single(	flip(	permute(m.ufield(Ny/2+1:end,:,:),[3 2 1]),3));
+    %ufieldt=single(	flip(	permute(m.ufield(Ny/2+1:end,:,:),[3 2 1]),3));
     vfieldb=single(		permute(m.vfield(1:Ny/2,:,:)	,[3 2 1]));
-    vfieldt=single(	flip(	permute(m.vfield(Ny/2+1:end,:,:),[3 2 1]),3));
+    %vfieldt=single(	flip(	permute(m.vfield(Ny/2+1:end,:,:),[3 2 1]),3));
     wfieldb=single(		permute(m.wfield(1:Ny/2,:,:)	,[3 2 1]));
-    wfieldt=single(	flip(	permute(m.wfield(Ny/2+1:end,:,:),[3 2 1]),3));
+    %wfieldt=single(	flip(	permute(m.wfield(Ny/2+1:end,:,:),[3 2 1]),3));
     clear m
 
 
@@ -103,11 +103,11 @@ size(m.vfield)
 	mgx=matfile(fvelgx)
 
 	dudxb=single(             permute(mgx.dudx(1:Ny/2,:,:)    ,[3 2 1]));
-    	dudxt=single(     flip(   permute(mgx.dudx(Ny/2+1:end,:,:),[3 2 1]),3));
+    	%dudxt=single(     flip(   permute(mgx.dudx(Ny/2+1:end,:,:),[3 2 1]),3));
     	dvdxb=single(             permute(mgx.dvdx(1:Ny/2,:,:)    ,[3 2 1]));
-    	dvdxt=single(     flip(   permute(mgx.dvdx(Ny/2+1:end,:,:),[3 2 1]),3));
+    	%dvdxt=single(     flip(   permute(mgx.dvdx(Ny/2+1:end,:,:),[3 2 1]),3));
     	dwdxb=single(             permute(mgx.dwdx(1:Ny/2,:,:)    ,[3 2 1]));
-    	dwdxt=single(     flip(   permute(mgx.dwdx(Ny/2+1:end,:,:),[3 2 1]),3));
+    	%dwdxt=single(     flip(   permute(mgx.dwdx(Ny/2+1:end,:,:),[3 2 1]),3));
 
 
 	clear mgx
@@ -115,29 +115,29 @@ size(m.vfield)
 	fvelgy=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgrady_%03d.mat",time);
 	mgy=matfile(fvelgy)
 	dudyb=single(             permute(mgy.dudy(1:Ny/2,:,:)    ,[3 2 1]));
-        dudyt=single(     flip(   permute(mgy.dudy(Ny/2+1:end,:,:),[3 2 1]),3));
+        %dudyt=single(     flip(   permute(mgy.dudy(Ny/2+1:end,:,:),[3 2 1]),3));
         dvdyb=single(             permute(mgy.dvdy(1:Ny/2,:,:)    ,[3 2 1]));
-        dvdyt=single(     flip(   permute(mgy.dvdy(Ny/2+1:end,:,:),[3 2 1]),3));
+        %dvdyt=single(     flip(   permute(mgy.dvdy(Ny/2+1:end,:,:),[3 2 1]),3));
         dwdyb=single(             permute(mgy.dwdy(1:Ny/2,:,:)    ,[3 2 1]));
-        dwdyt=single(     flip(   permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1]),3));
+        %dwdyt=single(     flip(   permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1]),3));
 	clear mgy
 
         fvelgz=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradz_%03d.mat",time);
         mgz=matfile(fvelgz)
 	dudzb=single(             permute(mgz.dudz(1:Ny/2,:,:)    ,[3 2 1]));
-        dudzt=single(     flip(   permute(mgz.dudz(Ny/2+1:end,:,:),[3 2 1]),3));
+        %dudzt=single(     flip(   permute(mgz.dudz(Ny/2+1:end,:,:),[3 2 1]),3));
         dvdzb=single(             permute(mgz.dvdz(1:Ny/2,:,:)    ,[3 2 1]));
-        dvdzt=single(     flip(   permute(mgz.dvdz(Ny/2+1:end,:,:),[3 2 1]),3));
+        %dvdzt=single(     flip(   permute(mgz.dvdz(Ny/2+1:end,:,:),[3 2 1]),3));
         dwdzb=single(             permute(mgz.dwdz(1:Ny/2,:,:)    ,[3 2 1]));
-        dwdzt=single(     flip(   permute(mgz.dwdz(Ny/2+1:end,:,:),[3 2 1]),3));
+        %dwdzt=single(     flip(   permute(mgz.dwdz(Ny/2+1:end,:,:),[3 2 1]),3));
         clear mgz
 
 	ft=sprintf("/vast/geyink1/skumar67/Ret_1000_data/Transfer_%03d.mat",time);
 	mt=matfile(ft);
 	vozb=single(             permute(mt.voz(1:Ny/2,:,:)    ,[3 2 1]));
-        vozt=single(     flip(   permute(mt.voz(Ny/2+1:end,:,:),[3 2 1]),3));
+        %vozt=single(     flip(   permute(mt.voz(Ny/2+1:end,:,:),[3 2 1]),3));
         woyb=single(             permute(mt.woy(1:Ny/2,:,:)    ,[3 2 1]));
-        woyt=single(     flip(   permute(mt.woy(Ny/2+1:end,:,:),[3 2 1]),3));
+        %woyt=single(     flip(   permute(mt.woy(Ny/2+1:end,:,:),[3 2 1]),3));
 	clear mt
 
 %
@@ -150,8 +150,8 @@ size(m.vfield)
     [kloc, iloc] = ind2sub(s,I);
     
     vjc=vj;
-%	for ii=1:2
-   while(abs(M)>abs(vthreshold))
+%	for ii=1:1
+   %while(abs(M)>abs(vthreshold))
 	event_location=[event_location;kloc iloc jcond time];
         counter=counter+1
         kdelta=ktarget-kloc;
@@ -217,7 +217,7 @@ size(m.vfield)
         vozb=circshift( vozb ,-[kdelta idelta]);
         woyb=circshift( woyb ,-[kdelta idelta]);
 
-    end
+    %end
     clear ufieldb vfieldb wfieldb
     clear dudxb dvdxb dwdxb
     clear dudyb dvdyb dwdyb
@@ -226,88 +226,88 @@ size(m.vfield)
 
 %    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%    top half
-    disp('top')
-    [M,I] = max(vjt(:));
-    [kloc, iloc] = ind2sub(s,I);
-    vjc=vjt;
-
-    while(abs(M)>abs(vthreshold))
-	    event_location=[event_location;kloc iloc jc time];
-        counter=counter+1
-        kdelta=ktarget-kloc;
-        idelta=itarget-iloc;
-        temp=circshift(vjc,[kdelta idelta]);
-        temp(ktarget-wink:ktarget+wink,itarget-wini:itarget+wini)=NaN;
-        vjc=circshift(temp,[-kdelta -idelta]);
-        [M,I] = max(vjc(:));
-        [kloc, iloc] = ind2sub(s,I);
+%    disp('top')
+%    [M,I] = max(vjt(:));
+%    [kloc, iloc] = ind2sub(s,I);
+%    vjc=vjt;
 %
-        ufieldt	=circshift( ufieldt	,[kdelta idelta]);
-        vfieldt	=circshift( vfieldt	,[kdelta idelta]);
-        wfieldt	=circshift( wfieldt	,[kdelta idelta]);
-
-    	dudxt=circshift( dudxt ,[kdelta idelta]);
-        dvdxt=circshift( dvdxt ,[kdelta idelta]);
-        dwdxt=circshift( dwdxt ,[kdelta idelta]);
-
-        dudyt=circshift( dudyt ,[kdelta idelta]);
-        dvdyt=circshift( dvdyt ,[kdelta idelta]);
-        dwdyt=circshift( dwdyt ,[kdelta idelta]);
-
-        dudzt=circshift( dudzt ,[kdelta idelta]);
-        dvdzt=circshift( dvdzt ,[kdelta idelta]);
-        dwdzt=circshift( dwdzt ,[kdelta idelta]);
-
-        vozt	=circshift( vozt 	,[kdelta idelta]);
-        woyt	=circshift( woyt 	,[kdelta idelta]);
-
-        un=	un	+ufieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        vn=	vn	-vfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        wn=	wn	+wfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-
-    	dudxn=dudxn        +dudxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dvdxn=dvdxn        -dvdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dwdxn=dwdxn        +dwdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-
-        dudyn=dudyn        -dudyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dvdyn=dvdyn        +dvdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dwdyn=dwdyn        -dwdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-
-        dudzn=dudzn        +dudzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dvdzn=dvdzn        -dvdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dwdzn=dwdzn        +dwdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-
-        vozn=	vozn	+vozt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        woyn=	woyn	+woyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-
-        ufieldt	=circshift( ufieldt,-[kdelta idelta]);
-        vfieldt	=circshift( vfieldt,-[kdelta idelta]);
-        wfieldt	=circshift( wfieldt,-[kdelta idelta]);
-
-    	dudxt=circshift( dudxt,-[kdelta idelta]);
-        dvdxt=circshift( dvdxt,-[kdelta idelta]);
-        dwdxt=circshift( dwdxt,-[kdelta idelta]);
-
-        dudyt=circshift( dudyt,-[kdelta idelta]);
-        dvdyt=circshift( dvdyt,-[kdelta idelta]);
-        dwdyt=circshift( dwdyt,-[kdelta idelta]);
-
-        dudzt=circshift( dudzt,-[kdelta idelta]);
-        dvdzt=circshift( dvdzt,-[kdelta idelta]);
-        dwdzt=circshift( dwdzt,-[kdelta idelta]);
-
-        vozt	=circshift( vozt 	,-[kdelta idelta]);
-        woyt	=circshift( woyt 	,-[kdelta idelta]);
-    end
-	clear ufieldt vfieldt wfieldt
-    clear dudxt dvdxt dwdxt
-    clear dudyt dvdyt dwdyt
-    clear dudzt dvdzt dwdzt
-    clear vozt woyt
-end
+%    while(abs(M)>abs(vthreshold))
+%	    event_location=[event_location;kloc iloc jc time];
+%        counter=counter+1
+%        kdelta=ktarget-kloc;
+%        idelta=itarget-iloc;
+%        temp=circshift(vjc,[kdelta idelta]);
+%        temp(ktarget-wink:ktarget+wink,itarget-wini:itarget+wini)=NaN;
+%        vjc=circshift(temp,[-kdelta -idelta]);
+%        [M,I] = max(vjc(:));
+%        [kloc, iloc] = ind2sub(s,I);
+%%
+%        ufieldt	=circshift( ufieldt	,[kdelta idelta]);
+%        vfieldt	=circshift( vfieldt	,[kdelta idelta]);
+%        wfieldt	=circshift( wfieldt	,[kdelta idelta]);
+%
+%    	dudxt=circshift( dudxt ,[kdelta idelta]);
+%        dvdxt=circshift( dvdxt ,[kdelta idelta]);
+%        dwdxt=circshift( dwdxt ,[kdelta idelta]);
+%
+%        dudyt=circshift( dudyt ,[kdelta idelta]);
+%        dvdyt=circshift( dvdyt ,[kdelta idelta]);
+%        dwdyt=circshift( dwdyt ,[kdelta idelta]);
+%
+%        dudzt=circshift( dudzt ,[kdelta idelta]);
+%        dvdzt=circshift( dvdzt ,[kdelta idelta]);
+%        dwdzt=circshift( dwdzt ,[kdelta idelta]);
+%
+%        vozt	=circshift( vozt 	,[kdelta idelta]);
+%        woyt	=circshift( woyt 	,[kdelta idelta]);
+%
+%        un=	un	+ufieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        vn=	vn	-vfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        wn=	wn	+wfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%
+%    	dudxn=dudxn        +dudxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        dvdxn=dvdxn        -dvdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        dwdxn=dwdxn        +dwdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%
+%        dudyn=dudyn        -dudyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        dvdyn=dvdyn        +dvdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        dwdyn=dwdyn        -dwdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%
+%        dudzn=dudzn        +dudzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        dvdzn=dvdzn        -dvdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        dwdzn=dwdzn        +dwdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%
+%        vozn=	vozn	+vozt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%        woyn=	woyn	+woyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+%
+%        ufieldt	=circshift( ufieldt,-[kdelta idelta]);
+%        vfieldt	=circshift( vfieldt,-[kdelta idelta]);
+%        wfieldt	=circshift( wfieldt,-[kdelta idelta]);
+%
+%    	dudxt=circshift( dudxt,-[kdelta idelta]);
+%        dvdxt=circshift( dvdxt,-[kdelta idelta]);
+%        dwdxt=circshift( dwdxt,-[kdelta idelta]);
+%
+%        dudyt=circshift( dudyt,-[kdelta idelta]);
+%        dvdyt=circshift( dvdyt,-[kdelta idelta]);
+%        dwdyt=circshift( dwdyt,-[kdelta idelta]);
+%
+%        dudzt=circshift( dudzt,-[kdelta idelta]);
+%        dvdzt=circshift( dvdzt,-[kdelta idelta]);
+%        dwdzt=circshift( dwdzt,-[kdelta idelta]);
+%
+%        vozt	=circshift( vozt 	,-[kdelta idelta]);
+%        woyt	=circshift( woyt 	,-[kdelta idelta]);
+%    end
+%	clear ufieldt vfieldt wfieldt
+%    clear dudxt dvdxt dwdxt
+%    clear dudyt dvdyt dwdyt
+%    clear dudzt dvdzt dwdzt
+%    clear vozt woyt
+%end
 %counter
 
-fc=sprintf("../data/conditionaln_jcond_%03d.mat",jcond);
+fc=sprintf("../data/conditionaln_jcond_inst_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

@@ -27,26 +27,37 @@ nlp=zeros(5,1);
 nln=zeros(5,1);
 areap=zeros(5,1);
 arean=zeros(5,1);
+nldprofiles=zeros(Ny,5);
+nluprofiles=zeros(Ny,5);
 
 val=6;
 for j=1:5
     jcond=jset(j);
     l=-val*ut^2/yc(j)^2;
 
-    fvgp=sprintf("../data/conditionalp_jcond_%03d.mat",jcond);
-    fvgn=sprintf("../data/conditionaln_jcond_%03d.mat",jcond);
+    fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+    fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
     m1=matfile(fvgp)
     m2=matfile(fvgn)
-    nld=da*squeeze(sum( (m1.voz-m1.woy).*(m1.lambda2./l>1),[1 2]));
+    [nzz, nxx, nyy]=size(m1.voz);
+    nzc=0.5*(nzz+1)
+    nxc=0.5*(nxx+1)
+
+%     nld=da*squeeze(sum( (m1.voz-m1.woy).*(m1.lambda2./l>1),[1 2]));
     vold=da*squeeze(sum( (m1.lambda2./l>1),[1 2] ));
-    nlu=da*squeeze(sum( (m2.voz-m2.woy).*(m2.lambda2./l>1),[1 2]));
+%     nlu=da*squeeze(sum( (m2.voz-m2.woy).*(m2.lambda2./l>1),[1 2]));
     volu=da*squeeze(sum( (m2.lambda2./l>1),[1 2] ));
+
+    nld=m1.voz(nzc,nxc,jcond)-m1.woy(nzc,nxc,jcond);
+    nlu=m2.voz(nzc,nxc,jcond)-m2.woy(nzc,nxc,jcond);
 
     areap(j)=vold(jcond);
     arean(j)=volu(jcond);
 
-    nlp(j)=nld(jcond);
-    nln(j)=nlu(jcond);
+    nlp(j)=nld;
+    nln(j)=nlu;
+%     nlp(j)=nld(jcond);
+%     nln(j)=nlu(jcond);
 
     xsizep(j)=m1.xsize;
     xsizen(j)=m2.xsize;
@@ -60,6 +71,9 @@ for j=1:5
     nump(j)=length(m1.event);
     numn(j)=length(m2.event);
 
+       nldprofiles(:,j)=m1.nlav;
+       nluprofiles(:,j)=m2.nlav;
+    
     
 end
 numt=20;
@@ -82,7 +96,8 @@ m.arean=arean;
 
 m.nlp=nlp;
 m.nln=nln;
-
+m.nldprofiles=nldprofiles;
+m.nluprofiles=nluprofiles;
 
 
 %figure

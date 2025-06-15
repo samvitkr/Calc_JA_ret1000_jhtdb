@@ -9,13 +9,13 @@ Nz=1536;
 Lx=8*pi;
 Lz=3*pi;
 
-%jcond=130;
-%xbox=0.8;
-%zbox=0.6;
+jcond=130;
+xbox=0.8;
+zbox=0.6;
 
-jcond=105;
-xbox=0.7;
-zbox=0.4;
+%jcond=105;
+%xbox=0.7;
+%zbox=0.4;
 
 %jcond=71
 %xbox=0.6;
@@ -51,10 +51,11 @@ nzav=2*winkav+1;
 nxav=2*winiav+1;
 event_location=[];
 counter=0;
+vmul=1;
 load('../data/JHTDB_RET1000.mat')
 vrms=sqrt(JHTDB_RET1000(:,5))./JHTDB_RET1000(:,2);
 %vrms=sqrt(0.5*(mp.vv(jcond,1)+mp.vv(jc,1)));
-vthreshold=2*vrms(jcond);
+vthreshold=vmul*vrms(jcond);
 clear JHTDB_RET1000  
 
 
@@ -307,7 +308,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionaln_jcond_%03d.mat",jcond);
+fc=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

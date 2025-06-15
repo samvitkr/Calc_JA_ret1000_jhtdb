@@ -9,17 +9,17 @@ Nz=1536;
 Lx=8*pi;
 Lz=3*pi;
 
-%jcond=130;
-%xbox=0.8;
-%zbox=0.6;
+jcond=130;
+xbox=0.8;
+zbox=0.6;
 
 %jcond=105;
 %xbox=0.7;
 %zbox=0.4;
 
-jcond=71
-xbox=0.6;
-zbox=0.3;
+%jcond=71
+%xbox=0.6;
+%zbox=0.3;
 
 %jcond=54;
 %xbox=0.5;
@@ -36,7 +36,7 @@ nf=1;
 
 tstart=1;
 %tend=00000;
-tend=10;
+tend=5;
 %tend=0;
 tstep=1;
 nf=(tend-tstart)/tstep+1;
@@ -79,8 +79,8 @@ woyn=	single(zeros(nzav,nxav,Ny/2));
 
 s=[Nz Nx];
 vjav=zeros(Nz,Nx);
-time=tend;
-%for time=tstart:tstep:tend
+%time=tstart;
+for time=tstart:tstep:tend
     	time
 %    fvel=sprintf("../data/velfields_%07d.mat",time);
 	fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
@@ -152,8 +152,8 @@ size(m.vfield)
     vjc=vj;
 %	for ii=1:1
    %while(abs(M)>abs(vthreshold))
-	event_location=[event_location;kloc iloc jcond time];
-        counter=counter+1
+%	event_location=[event_location;kloc iloc jcond time];
+  %      counter=counter+1
         kdelta=ktarget-kloc;
         idelta=itarget-iloc;
 
@@ -161,7 +161,7 @@ size(m.vfield)
         vjc(ktarget-wink:ktarget+wink,itarget-wini:itarget+wini)=NaN;
 
         vjc=circshift(vjc,[-kdelta -idelta]);
-        [M,I] = min(vjc(:));
+        [M,I] = max(vjc(:));
         [kloc, iloc] = ind2sub(s,I);
 
         ufieldb=circshift( ufieldb ,[kdelta idelta]);
@@ -306,11 +306,11 @@ size(m.vfield)
 %    clear vozt woyt
 %end
 %counter
-
-fc=sprintf("../data/conditionalp_jcond_inst_%03d.mat",jcond);
+counter=1;
+fc=sprintf("../data/conditionalp_jcond_inst_%03d_%02d.mat",jcond,time);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
-mc.event=event_location;
+%mc.event=event_location;
 mc.u=un./counter;
 mc.v=vn./counter;
 mc.w=wn./counter;
@@ -329,3 +329,4 @@ mc.dwdz=dwdzn./counter;
 
 mc.voz=vozn./counter;
 mc.woy=woyn./counter;
+end

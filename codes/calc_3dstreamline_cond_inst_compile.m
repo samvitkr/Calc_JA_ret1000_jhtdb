@@ -65,14 +65,17 @@ y=permute(Y,[2 1 3]);
 oxd=permute(m1.dwdy-m1.dvdz,[2 1 3]);
 oyd=permute(m1.dudz-m1.dwdx,[2 1 3]);
 ozd=permute(m1.dvdx-m1.dudy,[2 1 3]);
+nld=permute(m1.voz-m1.woy,[2 1 3]);
 
 oxu=permute(m2.dwdy-m2.dvdz,[2 1 3]);
 oyu=permute(m2.dudz-m2.dwdx,[2 1 3]);
 ozu=permute(m2.dvdx-m2.dudy,[2 1 3]);
+nlu=permute(m2.voz-m2.woy,[2 1 3]);
 
 oxq=permute(m3.dwdy-m3.dvdz,[2 1 3]);
 oyq=permute(m3.dudz-m3.dwdx,[2 1 3]);
 ozq=permute(m3.dvdx-m3.dudy,[2 1 3]);
+nlq=permute(m3.voz-m3.woy,[2 1 3]);
 
 %%
  [startZ,startX,startY]=meshgrid( 0 ,0,ys);
@@ -99,8 +102,8 @@ nexttile
 hold on;
 
 lighting gouraud; 
-lightangle(-45,90)
-scatter3(0,0,ys,50,'green','filled')
+% lightangle(-45,90)
+scatter3(0,-0.1,ys,50,'green','filled')
 
 l=streamline(vertsd);
 set(l, 'Color', 'k'); 
@@ -109,20 +112,34 @@ l2=streamline(verts2d);
 set(l2, 'Color', 'k'); 
 set(l2,'LineWidth',1);
 
+h=slice(z,x,y,-nld./ut^2,[],[0],[]);
+for kk=1:numel(h)
+    h(kk).YData=h(kk).YData+200;
+end
+
+
+shading interp
+ clim([-1500 1500])
+% colorbar
 colormap redblue
 axis equal
 view(0,0);
 
-set(gca,'FontSize',9)
-xlabel('$z^+$','interpreter','latex','FontSize',11)
+set(gca,'FontSize',8)
+xlabel('$z^+$','interpreter','latex','FontSize',8)
 %ylabel('$x^+$','interpreter','latex','FontSize',11)
-zlabel('$y^+$','interpreter','latex','FontSize',11)
+zlabel('$y^+$','interpreter','latex','FontSize',8)
 grid on
 
 switch j
     case 1
         xlim([-100 100])
         zlim([0 100])
+        c=colorbar;
+        c.Location='northoutside';
+        c.Ticks=[-1500:1500:1500];
+        c.Label.String="$ (v\omega_z-w\omega_y)/(-u_{\tau}^2/H)$"
+        c.Label.Interpreter='latex'
     case 2
         xlim([-100 100])
         zlim([0 100])
@@ -138,15 +155,14 @@ switch j
 end
 title( labels(3*(j-1)+1 ))
 
-
 %%
 nexttile
 hold on;
 
-camlight;                      % Add lighting
+% camlight;                      % Add lighting
 lighting gouraud; 
-lightangle(-45,90)
-scatter3(0,0,ys,50,'green','filled')
+% lightangle(-45,90)
+scatter3(0,-0.1,ys,50,'green','filled')
 
 
 l=streamline(vertsu);
@@ -155,21 +171,35 @@ set(l,'LineWidth',1);
 l2=streamline(verts2u);
 set(l2, 'Color', 'k'); 
 set(l2,'LineWidth',1);
+hu=slice(z,x,y,-nlu./ut^2,[],[0],[]);
+
+for kk=1:numel(hu)
+    hu(kk).YData=hu(kk).YData+250;
+end
+
+shading interp
+clim([-1500 1500])
+
 colormap redblue
 axis equal
 
 view(0,0);
 
-set(gca,'FontSize',9)
-xlabel('$z^+$','interpreter','latex','FontSize',11)
+set(gca,'FontSize',8)
+xlabel('$z^+$','interpreter','latex','FontSize',8)
 %ylabel('$x^+$','interpreter','latex','FontSize',11)
-zlabel('$y^+$','interpreter','latex','FontSize',11)
+zlabel('$y^+$','interpreter','latex','FontSize',8)
 grid on
 
 switch j
     case 1
         xlim([-100 100])
         zlim([0 100])
+        c=colorbar;
+        c.Location='northoutside';
+        c.Ticks=[-1500:1500:1500];
+        c.Label.String="$ (v\omega_z-w\omega_y)/(-u_{\tau}^2/H)$"
+        c.Label.Interpreter='latex'
     case 2
         xlim([-100 100])
         zlim([0 100])
@@ -188,10 +218,10 @@ title( labels(3*(j-1)+2 ))
 nexttile
 hold on;
 
-camlight;                      % Add lighting
+% camlight;                      % Add lighting
 lighting gouraud; 
-lightangle(-45,90)
-scatter3(0,0,ys,50,'green','filled')
+% lightangle(-45,90)
+scatter3(0,-0.1,ys,50,'green','filled')
 
 
 l=streamline(vertsq);
@@ -200,21 +230,34 @@ set(l,'LineWidth',1);
 l2=streamline(verts2q);
 set(l2, 'Color', 'k'); 
 set(l2,'LineWidth',1);
+
+hq=slice(z,x,y,-nlq./ut^2,[],[0],[]);
+for kk=1:numel(hu)
+    hq(kk).YData=hq(kk).YData+250;
+end
+
+shading interp
+clim([-1500 1500])
 colormap redblue
 axis equal
 
 view(0,0);
 
-set(gca,'FontSize',9)
-xlabel('$z^+$','interpreter','latex','FontSize',11)
+set(gca,'FontSize',8)
+xlabel('$z^+$','interpreter','latex','FontSize',8)
 %ylabel('$x^+$','interpreter','latex','FontSize',11)
-zlabel('$y^+$','interpreter','latex','FontSize',11)
+zlabel('$y^+$','interpreter','latex','FontSize',8)
 grid on
 
 switch j
     case 1
         xlim([-100 100])
         zlim([0 100])
+        c=colorbar;
+        c.Location='northoutside';
+        c.Ticks=[-1500:1500:1500];
+        c.Label.String="$ (v\omega_z-w\omega_y)/(-u_{\tau}^2/H)$"
+        c.Label.Interpreter='latex'
     case 2
         xlim([-100 100])
         zlim([0 100])
@@ -230,5 +273,8 @@ switch j
 end
 title( labels(3*(j) ) )
 end
-saveas(fd,'instantlines_p.fig')
-exportgraphics(fd,'instantlines_p.eps','BackgroundColor','white')
+% saveas(fd,'instantlines_p.fig')
+% exportgraphics(fd,'instantlines_p.eps','BackgroundColor','white')
+exportgraphics(fd,'instantlines_p_flux.eps','BackgroundColor','white')
+
+%%

@@ -40,9 +40,9 @@ for j=1:5
 jcond=jcset(j);
 yc=yv(jcond)+1;
 ys=yp(jcond)
-fvgp=sprintf("../data/conditionaln_jcond_inst_%03d_01.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_inst_%03d_02.mat",jcond);
-fvgq=sprintf("../data/conditionaln_jcond_inst_%03d_03.mat",jcond);
+fvgp=sprintf("../data/conditionalp_jcond_inst_%03d_01.mat",jcond);
+fvgn=sprintf("../data/conditionalp_jcond_inst_%03d_02.mat",jcond);
+fvgq=sprintf("../data/conditionalp_jcond_inst_%03d_03.mat",jcond);
 
 m1=matfile(fvgp,'Writable',true);
 m2=matfile(fvgn,'Writable',true);
@@ -111,14 +111,16 @@ set(l,'LineWidth',1);
 l2=streamline(verts2d);
 set(l2, 'Color', 'k'); 
 set(l2,'LineWidth',1);
-h=slice(z,x,y,-nld./ut^2,[],[0],[])
+
+h=slice(z,x,y,-nld./ut^2,[],[0],[]);
 for kk=1:numel(h)
-    h(kk).YData=h(kk).YData+400;
+    h(kk).YData=h(kk).YData+200;
 end
 
-shading interp
-clim([-1500 1500])
 
+shading interp
+ clim([-1500 1500])
+% colorbar
 colormap redblue
 axis equal
 view(0,0);
@@ -131,44 +133,27 @@ grid on
 
 switch j
     case 1
-        xlim([-101 101])
-        zlim([0 150])
-        xticks([-100:100:100])
+        xlim([-100 100])
+        zlim([0 100])
         c=colorbar;
         c.Location='northoutside';
         c.Ticks=[-1500:1500:1500];
         c.Label.String="$ (v\omega_z-w\omega_y)/(-u_{\tau}^2/H)$"
         c.Label.Interpreter='latex'
     case 2
-        xlim([-121 121])
-        zlim([0 200])
-                xticks([-120:120:120])
-                          set(gca,'XTickLabelRotation',0)
-
+        xlim([-100 100])
+        zlim([0 100])
     case 3
-        xlim([-151 151])
-        zlim([0 400])
-                xticks([-150:150:150])
-
-                          set(gca,'XTickLabelRotation',0)
-
+        xlim([-100 100])
+        zlim([0 250])
     case 4
         xlim([-200 200])
         zlim([0 500])
-        xticks([-200:200:200])
-                                  set(gca,'XTickLabelRotation',0)
-
-
     case 5
-        xlim([-281 281])
-        zlim([0 710])
-        
-         xticks([-280:280:280])
-                         set(gca,'XTickLabelRotation',0)
-
+        xlim([-200 200])
+        zlim([0 500])
 end
 title( labels(3*(j-1)+1 ))
-
 
 %%
 nexttile
@@ -180,68 +165,53 @@ lighting gouraud;
 scatter3(0,-0.1,ys,50,'green','filled')
 
 
-l=streamline(vertsu);
-set(l, 'Color', 'k'); 
-set(l,'LineWidth',1);
-l2=streamline(verts2u);
-set(l2, 'Color', 'k'); 
-set(l2,'LineWidth',1);
+% l=streamline(vertsu);
+% set(l, 'Color', 'k'); 
+% set(l,'LineWidth',1);
+% l2=streamline(verts2u);
+% set(l2, 'Color', 'k'); 
+% set(l2,'LineWidth',1);
+hu=slice(z,x,y,-nlu./ut^2,[],[0],[]);
 
-%slice(z,x,y,-nlu./ut^2,[],[0],[])
-hu=slice(z,x,y,-nlu./ut^2,[],[0],[])
-for kk=1:numel(hu)
-    hu(kk).YData=hu(kk).YData+400;
-end
+% for kk=1:numel(hu)
+%     hu(kk).YData=hu(kk).YData+250;
+% end
+
 shading interp
 clim([-1500 1500])
 
 colormap redblue
 axis equal
 
-view(0,0);
+% view(0,0);
 
 set(gca,'FontSize',8)
 xlabel('$z^+$','interpreter','latex','FontSize',8)
-%ylabel('$x^+$','interpreter','latex','FontSize',11)
-zlabel('$y^+$','interpreter','latex','FontSize',8)
+ylabel('$x^+$','interpreter','latex','FontSize',11)
+% zlabel('$y^+$','interpreter','latex','FontSize',8)
 grid on
 
 switch j
     case 1
-    xlim([-101 101])
-        zlim([0 150])
-        xticks([-100:100:100])
+        xlim([-100 100])
+        zlim([0 100])
         c=colorbar;
         c.Location='northoutside';
         c.Ticks=[-1500:1500:1500];
         c.Label.String="$ (v\omega_z-w\omega_y)/(-u_{\tau}^2/H)$"
         c.Label.Interpreter='latex'
     case 2
-        xlim([-121 121])
-        zlim([0 200])
-                xticks([-120:120:120])
-                          set(gca,'XTickLabelRotation',0)
+        xlim([-100 100])
+        zlim([0 100])
     case 3
-        xlim([-151 151])
-        zlim([0 400])
-                xticks([-150:150:150])
-                          set(gca,'XTickLabelRotation',0)
-
-
+        xlim([-100 100])
+        zlim([0 250])
     case 4
         xlim([-200 200])
         zlim([0 500])
-        xticks([-200:200:200])
-
-                          set(gca,'XTickLabelRotation',0)
-
     case 5
-        xlim([-281 281])
-        zlim([0 710])
-        
-         xticks([-280:280:280])
-                         set(gca,'XTickLabelRotation',0)
-
+        xlim([-200 200])
+        zlim([0 500])
 end
 title( labels(3*(j-1)+2 ))
 %%
@@ -254,19 +224,18 @@ lighting gouraud;
 scatter3(0,-0.1,ys,50,'green','filled')
 
 
-l=streamline(vertsq);
-set(l, 'Color', 'k'); 
-set(l,'LineWidth',1);
-l2=streamline(verts2q);
-set(l2, 'Color', 'k'); 
-set(l2,'LineWidth',1);
+% l=streamline(vertsq);
+% set(l, 'Color', 'k'); 
+% set(l,'LineWidth',1);
+% l2=streamline(verts2q);
+% set(l2, 'Color', 'k'); 
+% set(l2,'LineWidth',1);
 
-%slice(z,x,y,-nlq./ut^2,[],[0],[])
-
-hq=slice(z,x,y,-nlq./ut^2,[],[0],[])
-for kk=1:numel(hq)
-    hq(kk).YData=hq(kk).YData+400;
+hq=slice(z,x,y,-nlq./ut^2,[],[0],[]);
+for kk=1:numel(hu)
+    hq(kk).YData=hq(kk).YData+250;
 end
+
 shading interp
 clim([-1500 1500])
 colormap redblue
@@ -280,47 +249,32 @@ xlabel('$z^+$','interpreter','latex','FontSize',8)
 zlabel('$y^+$','interpreter','latex','FontSize',8)
 grid on
 
-
 switch j
     case 1
-        xlim([-101 101])
-        zlim([0 150])
-        xticks([-100:100:100])
+        xlim([-100 100])
+        zlim([0 100])
         c=colorbar;
         c.Location='northoutside';
         c.Ticks=[-1500:1500:1500];
         c.Label.String="$ (v\omega_z-w\omega_y)/(-u_{\tau}^2/H)$"
         c.Label.Interpreter='latex'
     case 2
-        xlim([-121 121])
-        zlim([0 200])
-                xticks([-120:120:120])
-                          set(gca,'XTickLabelRotation',0)
-
+        xlim([-100 100])
+        zlim([0 100])
     case 3
-        xlim([-160 160])
-        zlim([0 400])
-                xticks([-150:150:150])
-                set(gca,'XTickLabelRotation',0)
-
-
+        xlim([-100 100])
+        zlim([0 250])
     case 4
-        xlim([-201 201])
+        xlim([-200 200])
         zlim([0 500])
-          xticks([-200:200:200])
-                          set(gca,'XTickLabelRotation',0)
-
-
     case 5
-        xlim([-281 281])
-        zlim([0 710])
-        
-         xticks([-280:280:280])
-                         set(gca,'XTickLabelRotation',0)
-
+        xlim([-200 200])
+        zlim([0 500])
 end
 title( labels(3*(j) ) )
 end
-% saveas(fd,'instantlines_n.fig')
- % exportgraphics(fd,'instantlines_n.eps','BackgroundColor','white')
-  exportgraphics(fd,'instantlines_n_flux.eps','BackgroundColor','white')
+% saveas(fd,'instantlines_p.fig')
+% exportgraphics(fd,'instantlines_p.eps','BackgroundColor','white')
+exportgraphics(fd,'instantlines_p_flux.eps','BackgroundColor','white')
+
+%%

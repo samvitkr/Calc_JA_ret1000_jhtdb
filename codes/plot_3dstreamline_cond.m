@@ -24,9 +24,9 @@ ktarget=nz/2+1;
 
 %jcond=130;
 %jcond=105
-%jcond=71;
+jcond=71;
 %jcond=54;
-jcond=47;
+% jcond=47;
 yc=yv(jcond)+1;
 
 ys=yp(jcond);

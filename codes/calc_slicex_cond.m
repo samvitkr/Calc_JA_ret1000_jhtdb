@@ -17,8 +17,8 @@ jcond=71;
 jc=jcond;
 %fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 %fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
-fvgp=sprintf("../data/conditionalp_jcond_%03d.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_%03d.mat",jcond);
+fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
 m=matfile(fvgp,'Writable',true);
 mu=matfile(fvgn,'Writable',true);
 [nzz, nxx, nyy]=size(m.lambda2);
@@ -35,7 +35,7 @@ zp=zp(ktarget-wzz:ktarget+wzz);
 
 islice=wxx+1;
 xp(islice)
-fx=sprintf('../data/lse_xslice_cond_2rms_j_%03d.mat',jcond)
+fx=sprintf('../data/lse_xslice_cond_j_%03d.mat',jcond)
 %fx=sprintf('../data/lse_xslice_cond_i_%03d_j_%03d.mat',islice,jcond)
 %	fx=sprintf('../data/lse_xsliceset_j_%03d.mat',jcond)
 	mx=matfile(fx,'Writable',true)

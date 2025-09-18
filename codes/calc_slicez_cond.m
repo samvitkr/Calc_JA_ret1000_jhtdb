@@ -12,14 +12,18 @@ zp=(lz*[0:nz-1]/nz-lz/2);
 yp=(yv(1:Ny)'+1);
 itarget=nx/2+1;
 ktarget=nz/2+1;
-jcond=130;
+jcond=105;
 jc=jcond;
 %fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 %fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
-fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
+
+fvgp=sprintf("../data/conditionalp_jcond_omegaz_%03d.mat",jcond);
+
+% fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+% fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
+
 m=matfile(fvgp,'Writable',true);
-mu=matfile(fvgn,'Writable',true);
+ % mu=matfile(fvgn,'Writable',true);
 [nzz, nxx, nyy]=size(m.lambda2);
 wzz=(nzz-1)/2;
 wxx=(nxx-1)/2;
@@ -35,7 +39,10 @@ zp=zp(ktarget-wzz:ktarget+wzz);
 islice=wxx+1;
 kslice=wzz+1;
 xp(islice)
-fx=sprintf('../data/lse_zslice_cond_j_%03d.mat',jcond)
+% fx=sprintf('../data/lse_zslice_cond_j_%03d.mat',jcond)
+
+ fx=sprintf('../data/lse_zslice_oz_cond_j_%03d.mat',jcond)
+
 %fx=sprintf('../data/lse_xslice_cond_i_%03d_j_%03d.mat',islice,jcond)
 %	fx=sprintf('../data/lse_xsliceset_j_%03d.mat',jcond)
 	mx=matfile(fx,'Writable',true)
@@ -46,7 +53,12 @@ fx=sprintf('../data/lse_zslice_cond_j_%03d.mat',jcond)
 	oxd= squeeze(m.dwdy(kslice,:,:)-m.dvdz(kslice,:,:))';
 	ozd= squeeze(m.dvdx(kslice,:,:)-m.dudy(kslice,:,:))';
 	oyd= squeeze(m.dudz(kslice,:,:)-m.dwdx(kslice,:,:))';
+    dvdxd=squeeze(m.dvdx(kslice,:,:))';
+    dudyd=squeeze(m.dudy(kslice,:,:))';
+    
 	ld=  squeeze(m.lambda2(kslice,:,:))';
+    	qd=  squeeze(m.Q(kslice,:,:))';
+
 	vozd=squeeze(m.v(kslice,:,:).*(m.dvdx(kslice,:,:)-m.dudy(kslice,:,:)))';
         woyd=squeeze(m.w(kslice,:,:).*(m.dudz(kslice,:,:)-m.dwdx(kslice,:,:)))';
         vozdc=squeeze(m.voz(kslice,:,:))';
@@ -59,50 +71,74 @@ fx=sprintf('../data/lse_zslice_cond_j_%03d.mat',jcond)
 %oy2d=  squeeze(m.oy2(kslice,:,:))';
 %oz2d=  squeeze(m.oz2(kslice,:,:))';
 
-	uu= squeeze(mu.u(kslice,:,:))';	
-	vu=  squeeze(mu.v(kslice,:,:))';
-	wu=  squeeze(mu.w(kslice,:,:))';
-	oxu= squeeze(mu.dwdy(kslice,:,:)-mu.dvdz(kslice,:,:))';
-	ozu= squeeze(mu.dvdx(kslice,:,:)-mu.dudy(kslice,:,:))';
-	oyu= squeeze(mu.dudz(kslice,:,:)-mu.dwdx(kslice,:,:))';
+% 	uu= squeeze(mu.u(kslice,:,:))';	
+% 	vu=  squeeze(mu.v(kslice,:,:))';
+% 	wu=  squeeze(mu.w(kslice,:,:))';
+% 	oxu= squeeze(mu.dwdy(kslice,:,:)-mu.dvdz(kslice,:,:))';
+% 	ozu= squeeze(mu.dvdx(kslice,:,:)-mu.dudy(kslice,:,:))';
+% 	oyu= squeeze(mu.dudz(kslice,:,:)-mu.dwdx(kslice,:,:))';
+% dvdxu=squeeze(mu.dvdx(kslice,:,:))';
+%     dudyu=squeeze(mu.dudy(kslice,:,:))';
+% 
+% lu=  squeeze(mu.lambda2(kslice,:,:))';
+% qu=  squeeze(mu.Q(kslice,:,:))';
+% 
+% 	vozu=squeeze(mu.v(kslice,:,:).*(mu.dvdx(kslice,:,:)-mu.dudy(kslice,:,:)))';
+%         woyu=squeeze(mu.w(kslice,:,:).*(mu.dudz(kslice,:,:)-mu.dwdx(kslice,:,:)))';
+%         vozuc=squeeze(mu.voz(kslice,:,:))';
+%         woyuc=squeeze(mu.woy(kslice,:,:))';
 
-%u2u=  squeeze(mu.u2(kslice,:,:))';
+    %u2u=  squeeze(mu.u2(kslice,:,:))';
 %v2u=  squeeze(mu.v2(kslice,:,:))';
 %w2u=  squeeze(mu.w2(kslice,:,:))';
 %ox2u=  squeeze(mu.ox2(kslice,:,:))';
 %oy2u=  squeeze(mu.oy2(kslice,:,:))';
 %oz2u=  squeeze(mu.oz2(kslice,:,:))';
 
-	lu=  squeeze(mu.lambda2(kslice,:,:))';
-	vozu=squeeze(mu.v(kslice,:,:).*(mu.dvdx(kslice,:,:)-mu.dudy(kslice,:,:)))';
-        woyu=squeeze(mu.w(kslice,:,:).*(mu.dudz(kslice,:,:)-mu.dwdx(kslice,:,:)))';
-        vozuc=squeeze(mu.voz(kslice,:,:))';
-        woyuc=squeeze(mu.woy(kslice,:,:))';
-
-
+% 	mx.ud=ud;
+% 	 mx.uu=uu;	
+% 	mx.vd=vd;
+% 	 mx.vu=vu;
+% 	mx.oxd=oxd;
+% 	 mx.oxu=oxu;
+% 	mx.ozd=ozd;
+% 	 mx.ozu=ozu;
+% 	mx.wd=wd;
+% 	 mx.wu=wu;
+% 	mx.oyd=oyd;
+% 	 mx.oyu=oyu;
+% 	mx.vozd=vozd;
+% 	 mx.vozu=vozu;
+% 	mx.woyd=woyd;
+% 	mx.woyu=woyu;
+% 	mx.vozdc=vozdc;
+%         mx.vozuc=vozuc;
+%         mx.woydc=woydc;
+%         mx.woyuc=woyuc;
+% 	mx.dudyd=dudyd;
+%     mx.dvdxd=dvdxd;
+%     mx.dudyu=dudyu;
+%     mx.dvdxu=dvdxu;
+% 
+%         mx.ld=ld;
+% 	mx.lu=lu;
+% mx.qd=qd;
+% mx.qu=qu;
 
 	mx.ud=ud;
-	mx.uu=uu;	
 	mx.vd=vd;
-	mx.vu=vu;
 	mx.oxd=oxd;
-	mx.oxu=oxu;
 	mx.ozd=ozd;
-	mx.ozu=ozu;
 	mx.wd=wd;
-	mx.wu=wu;
 	mx.oyd=oyd;
-	mx.oyu=oyu;
 	mx.vozd=vozd;
-	mx.vozu=vozu;
 	mx.woyd=woyd;
-	mx.woyu=woyu;
 	mx.vozdc=vozdc;
-        mx.vozuc=vozuc;
-        mx.woydc=woydc;
-        mx.woyuc=woyuc;
-	mx.ld=ld;
-	mx.lu=lu;
+    mx.woydc=woydc;
+    mx.ld=ld;
+    mx.qd=qd;
+    mx.dudyd=dudyd;
+    mx.dvdxd=dvdxd;
 	mx.X=X;
 	mx.Y=Y;
 

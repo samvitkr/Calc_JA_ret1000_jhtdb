@@ -36,7 +36,7 @@ fd.Position=[x1 y1 width height ];
 % t.Padding="compact";
 %jcond=130;
 labels=arrayfun(@(k) ['(' char('a'+k-1) ')'],1:15,'UniformOutput',false);
-for j=2:2
+for j=4:4
 jcond=jcset(j);
 yc=yv(jcond)+1;
 ys=yp(jcond)
@@ -78,17 +78,17 @@ r=sqrt(x.^2+z.^2+ry.^2);
 oxd=permute(m1.dwdy-m1.dvdz,[2 1 3]);
 oyd=permute(m1.dudz-m1.dwdx,[2 1 3]);
 ozd=permute(m1.dvdx-m1.dudy,[2 1 3]);
-ld = permute(m1.lambda2,[2 1 3]);
+ld = permute(m1.Q,[2 1 3]);
 
 oxu=permute(m2.dwdy-m2.dvdz,[2 1 3]);
 oyu=permute(m2.dudz-m2.dwdx,[2 1 3]);
 ozu=permute(m2.dvdx-m2.dudy,[2 1 3]);
-lu=permute(m2.lambda2,[2 1 3]);
+lu=permute(m2.Q,[2 1 3]);
 
 oxq=permute(m3.dwdy-m3.dvdz,[2 1 3]);
 oyq=permute(m3.dudz-m3.dwdx,[2 1 3]);
 ozq=permute(m3.dvdx-m3.dudy,[2 1 3]);
-lq=permute(m3.lambda2,[2 1 3]);
+lq=permute(m3.Q,[2 1 3]);
 
 omd=sqrt(oxd.^2+oyd.^2+ozd.^2);
 omu=sqrt(oxu.^2+oyu.^2+ozu.^2); 
@@ -131,7 +131,7 @@ omtu=rcoux.*cosmp+rcouy.*sinmp;
 omtq=rcoqx.*cosmp+rcoqy.*sinmp;
 
 hslice=surf(linspace(-100,100,100),linspace(-100,100,100),zeros(100));
-rotate(hslice,[-1,0,0],-thetadeg);
+rotate(hslice,[-1,0,0],-thetadeg*0);
 xd=get(hslice,'XData');
 yd=get(hslice,'YData');
 zd=get(hslice,'Zdata')+ys-5;
@@ -206,7 +206,7 @@ scatter3(0,0,ys+1,50,'green','filled')
 % l=streamline(vertsd);
 %slice(z,x,y,dnu*ozd./ut,[0],[],[])
 % slice(z,x,y,omtd,[],[],[ys])
-slice(z,x,y,omtd,xd,yd,zd)
+slice(z,x,y,ld,xd,yd,zd)
 shading flat
 % set(l, 'Color', 'k'); 
 % set(l,'LineWidth',1);
@@ -217,7 +217,7 @@ shading flat
 colormap redblue
 axis equal
 view(0,90);
- clim([-0.5 0.5])
+ clim([-50 50])
  % clim([-0.01 0.01])
 lighting gouraud
 lightangle(45,45)
@@ -251,7 +251,7 @@ ylim([-100 100])
         xlim([-100 100])
 zlim([ys-40 ys+40])
 ylim([-100 100])
-
+clim([-0.5 0.5])
 end
 title( labels(3*(j-1)+1 ))
 
@@ -274,12 +274,12 @@ scatter3(0,0,ys+1,50,'green','filled')
 
 % slice(z,x,y,dnu*ozu./ut,[0],[],[])
 % slice(z,x,y,omtu,[],[],[ys])
-slice(z,x,y,omtu,xd,yd,zd)
+slice(z,x,y,lu,xd,yd,zd)
 
 shading flat
 colormap redblue
 axis equal
- clim([-0.5 0.5])
+ clim([-50 50])
 % clim([-0.01 0.01])
 
 view(45,45)
@@ -338,11 +338,11 @@ scatter3(0,0,ys+1,50,'green','filled')
 
 % slice(z,x,y,dnu*ozq./ut,[0],[],[])
 %slice(z,x,y,omtq,[],[],[ys])
-slice(z,x,y,omtq,xd,yd,zd)
+slice(z,x,y,lq,xd,yd,zd)
 
 shading flat
 colormap redblue
- clim([-0.5 0.5])
+ clim([-50 50])
 % clim([-0.01 0.01])
 
 axis equal

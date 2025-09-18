@@ -9,6 +9,7 @@ Nz=1536;
 Lx=8*pi;
 Lz=3*pi;
 
+
 %jcond=130;
 %xbox=0.8;
 %zbox=0.6;
@@ -51,11 +52,11 @@ nzav=2*winkav+1;
 nxav=2*winiav+1;
 event_location=[];
 counter=0;
-vmul=1;
+vmul=10;
 load('../data/JHTDB_RET1000.mat')
-vrms=sqrt(JHTDB_RET1000(:,5))./JHTDB_RET1000(end,2);
+uvav=abs((JHTDB_RET1000(:,3))./JHTDB_RET1000(end,2)^2);
 %vrms=sqrt(0.5*(mp.vv(jcond,1)+mp.vv(jc,1)));
-vthreshold=vmul*vrms(jcond);
+vthreshold=vmul*uvav(jcond);
 clear JHTDB_RET1000  
 
 
@@ -88,8 +89,8 @@ for time=tstart:tstep:tend
 	m=matfile(fvel)
 %
 size(m.vfield)
-     vj=permute(single(m.vfield(jcond,:,:)),[3 2 1]);
-    vjt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
+     vb=permute(single(m.vfield(jcond,:,:)),[3 2 1]);
+    vt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
 
     ufieldb=single(		permute(m.ufield(1:Ny/2,:,:)	,[3 2 1]));
     ufieldt=single(	flip(	permute(m.ufield(Ny/2+1:end,:,:),[3 2 1]),3));
@@ -98,8 +99,13 @@ size(m.vfield)
     wfieldb=single(		permute(m.wfield(1:Ny/2,:,:)	,[3 2 1]));
     wfieldt=single(	flip(	permute(m.wfield(Ny/2+1:end,:,:),[3 2 1]),3));
     clear m
+	upb = ufieldb(:,:,jcond)-mean(ufieldb(:,:,jcond),'all');
+	upt = ufieldt(:,:,jcond)-mean(ufieldt(:,:,jcond),'all');
 
-
+	uvb = upb.*vb.*(vb>0);
+	uvt = upt.*vt.*(vt<0);
+	vj = uvb.*(uvb<-vthreshold)
+	vjt= uvt.*(uvt<-vthresold)
 	fvelgx=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradx_%03d.mat",time);
 	mgx=matfile(fvelgx)
 
@@ -146,7 +152,7 @@ size(m.vfield)
     %bottom half
     disp('bot')
 
-    [M,I] = max(vj(:));
+    [M,I] = min(vj(:));
 
     [kloc, iloc] = ind2sub(s,I);
     
@@ -308,7 +314,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+fc=sprintf("../data/conditionalq2_jcond_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

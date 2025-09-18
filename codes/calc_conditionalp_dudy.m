@@ -123,6 +123,12 @@ size(m.vfield)
         dwdyt=single(     flip(   permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1]),3));
 	clear mgy
 
+
+	vj=vj.*( dudyb(:,:,jcond)<0 );
+	vjt=vjt.*(dudyt(:,:,jcond)>0);
+
+
+
         fvelgz=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradz_%03d.mat",time);
         mgz=matfile(fvelgz)
 	dudzb=single(             permute(mgz.dudz(1:Ny/2,:,:)    ,[3 2 1]));
@@ -308,7 +314,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+fc=sprintf("../data/conditionalp_jcond_dudy_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

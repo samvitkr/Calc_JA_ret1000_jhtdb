@@ -84,12 +84,18 @@ vjav=zeros(Nz,Nx);
 for time=tstart:tstep:tend
     	time
 %    fvel=sprintf("../data/velfields_%07d.mat",time);
-	fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
+fvort = sprintf("/vast/geyink1/skumar67/Ret_1000_data/vort_%03d.mat",time)
+mvo=matfile(fvort)
+     vj=permute(single(mvo.omegaz(jcond,:,:)),[3 2 1]);
+    vjt=permute(single(mvo.omegaz(jc,:,:))   ,[3 2 1]);
+
+clear mvo
+fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
 	m=matfile(fvel)
 %
-size(m.vfield)
-     vj=permute(single(m.vfield(jcond,:,:)),[3 2 1]);
-    vjt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
+%size(m.vfield)
+%     vj=permute(single(m.vfield(jcond,:,:)),[3 2 1]);
+%    vjt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
 
     ufieldb=single(		permute(m.ufield(1:Ny/2,:,:)	,[3 2 1]));
     ufieldt=single(	flip(	permute(m.ufield(Ny/2+1:end,:,:),[3 2 1]),3));
@@ -152,7 +158,7 @@ size(m.vfield)
     
     vjc=vj;
 %	for ii=1:2
-   while(abs(M)>abs(vthreshold))
+%   while(abs(M)>abs(vthreshold))
 	event_location=[event_location;kloc iloc jcond time];
         counter=counter+1
         kdelta=ktarget-kloc;
@@ -218,7 +224,7 @@ size(m.vfield)
         vozb=circshift( vozb ,-[kdelta idelta]);
         woyb=circshift( woyb ,-[kdelta idelta]);
 
-    end
+    %end
     clear ufieldb vfieldb wfieldb
     clear dudxb dvdxb dwdxb
     clear dudyb dvdyb dwdyb
@@ -232,7 +238,7 @@ size(m.vfield)
     [kloc, iloc] = ind2sub(s,I);
     vjc=vjt;
 
-    while(abs(M)>abs(vthreshold))
+    %while(abs(M)>abs(vthreshold))
 	    event_location=[event_location;kloc iloc jc time];
         counter=counter+1
         kdelta=ktarget-kloc;
@@ -299,7 +305,7 @@ size(m.vfield)
 
         vozt	=circshift( vozt 	,-[kdelta idelta]);
         woyt	=circshift( woyt 	,-[kdelta idelta]);
-    end
+    %end
 	clear ufieldt vfieldt wfieldt
     clear dudxt dvdxt dwdxt
     clear dudyt dvdyt dwdyt
@@ -308,7 +314,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+fc=sprintf("../data/conditionalp_jcond_max_omegaz_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

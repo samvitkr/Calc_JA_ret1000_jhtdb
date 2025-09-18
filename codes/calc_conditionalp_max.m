@@ -152,7 +152,7 @@ size(m.vfield)
     
     vjc=vj;
 %	for ii=1:2
-   while(abs(M)>abs(vthreshold))
+%   while(abs(M)>abs(vthreshold))
 	event_location=[event_location;kloc iloc jcond time];
         counter=counter+1
         kdelta=ktarget-kloc;
@@ -218,7 +218,7 @@ size(m.vfield)
         vozb=circshift( vozb ,-[kdelta idelta]);
         woyb=circshift( woyb ,-[kdelta idelta]);
 
-    end
+    %end
     clear ufieldb vfieldb wfieldb
     clear dudxb dvdxb dwdxb
     clear dudyb dvdyb dwdyb
@@ -232,7 +232,7 @@ size(m.vfield)
     [kloc, iloc] = ind2sub(s,I);
     vjc=vjt;
 
-    while(abs(M)>abs(vthreshold))
+    %while(abs(M)>abs(vthreshold))
 	    event_location=[event_location;kloc iloc jc time];
         counter=counter+1
         kdelta=ktarget-kloc;
@@ -299,7 +299,7 @@ size(m.vfield)
 
         vozt	=circshift( vozt 	,-[kdelta idelta]);
         woyt	=circshift( woyt 	,-[kdelta idelta]);
-    end
+    %end
 	clear ufieldt vfieldt wfieldt
     clear dudxt dvdxt dwdxt
     clear dudyt dvdyt dwdyt
@@ -308,7 +308,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+fc=sprintf("../data/conditionalp_jcond_max_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

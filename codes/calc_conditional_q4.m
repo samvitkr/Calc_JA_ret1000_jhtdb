@@ -102,8 +102,8 @@ size(m.vfield)
 	upb = ufieldb(:,:,jcond)-mean(ufieldb(:,:,jcond),'all');
 	upt = ufieldt(:,:,jcond)-mean(ufieldt(:,:,jcond),'all');
 
-	uvb = upb.*vb.*(vb>0);
-	uvt = upt.*vt.*(vt<0);
+	uvb = upb.*vb.*(vb<0);
+	uvt = upt.*vt.*(vt>0);
 	vj = uvb.*(uvb<-vthreshold);
 	vjt= uvt.*(uvt>vthreshold);
 	fvelgx=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradx_%03d.mat",time);
@@ -314,7 +314,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalq2_jcond_%03d.mat",jcond);
+fc=sprintf("../data/conditionalq4_jcond_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

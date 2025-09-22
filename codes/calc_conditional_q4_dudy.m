@@ -82,7 +82,7 @@ woyn=	single(zeros(nzav,nxav,Ny/2));
 s=[Nz Nx];
 vjav=zeros(Nz,Nx);
 
-for time=tstart:tstep:tend
+for time=1:1%tstart:tstep:tend
     	time
 %    fvel=sprintf("../data/velfields_%07d.mat",time);
 	fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
@@ -102,8 +102,8 @@ size(m.vfield)
 	upb = ufieldb(:,:,jcond)-mean(ufieldb(:,:,jcond),'all');
 	upt = ufieldt(:,:,jcond)-mean(ufieldt(:,:,jcond),'all');
 
-	uvb = upb.*vb.*(vb>0);
-	uvt = upt.*vt.*(vt<0);
+	uvb = upb.*vb.*(vb<0);
+	uvt = upt.*vt.*(vt>0);
 	vj = uvb.*(uvb<-vthreshold);
 	vjt= uvt.*(uvt>vthreshold);
 	fvelgx=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradx_%03d.mat",time);
@@ -128,6 +128,9 @@ size(m.vfield)
         dwdyb=single(             permute(mgy.dwdy(1:Ny/2,:,:)    ,[3 2 1]));
         dwdyt=single(     flip(   permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1]),3));
 	clear mgy
+
+	vj=vj.*(dudyb(:,:,jcond)<0);
+        vjt=vjt.*(dudyt(:,:,jcond)>0);
 
         fvelgz=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradz_%03d.mat",time);
         mgz=matfile(fvelgz)
@@ -314,7 +317,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalq2_jcond_%03d.mat",jcond);
+fc=sprintf("../data/conditionalq4_dudy_jcond_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

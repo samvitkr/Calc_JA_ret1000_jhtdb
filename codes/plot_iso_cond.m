@@ -12,15 +12,15 @@ zp=ret*(lz*[0:nz-1]/nz-lz/2);
 yp=ret*(yv(1:Ny)'+1);
 itarget=nx/2+1;
 ktarget=nz/2+1;
-jcond=130;
+jcond=105;
 yc=yv(jcond)+1;
 ut=0.0499;
 dnu=1.0006e-3;
 jc=jcond;
 %fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 %fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
-fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
+fvgp=sprintf("../data/conditionalp_jcond_dudy_%03d.mat",jcond);
+fvgn=sprintf("../data/conditionaln_jcond_dudy_%03d.mat",jcond);
 m1=matfile(fvgp,'Writable',true);
 m2=matfile(fvgn,'Writable',true);
 [nzz, nxx, nyy]=size(m1.u);
@@ -37,13 +37,13 @@ l2=-ut^2/yc^2;
 val=6;
 [X,Z,Y]=(meshgrid(xp1,zp1,yp));
 
-xb1=min([m1.xstart m2.xstart]);
-yb1=min([m1.ystart m2.ystart]);
-zb1=min([m1.zstart m2.zstart]);
-
-xb2=max([m1.xend m2.xend]);
-yb2=max([m1.yend m2.yend]);
-zb2=max([m1.zend m2.zend]);
+% xb1=min([m1.xstart m2.xstart]);
+% yb1=min([m1.ystart m2.ystart]);
+% zb1=min([m1.zstart m2.zstart]);
+% 
+% xb2=max([m1.xend m2.xend]);
+% yb2=max([m1.yend m2.yend]);
+% zb2=max([m1.zend m2.zend]);
 
 % mt=matfile('velgrad_transfer_flp_0070000.mat')
 % m=matfile('lambdaflp_0070000.mat');
@@ -101,13 +101,13 @@ set(gca,'FontSize',11)
 c.Ticks=[-cl, 0, cl];
 view(45,45)
 clim([-cl cl])
-zlim([yb1-1 yb2+1])
-xlim([zb1-1 zb2+1])
-ylim([xb1-2 xb2+2])
-
-zticks([round(m1.ystart) round(m1.yend)])
-xticks([round(m1.zstart) ,0,round(m1.zend)])
-yticks([round(m1.xstart) ,0,round(m1.xend)])
+% zlim([yb1-1 yb2+1])
+% xlim([zb1-1 zb2+1])
+% ylim([xb1-2 xb2+2])
+% 
+% zticks([round(m1.ystart) round(m1.yend)])
+% xticks([round(m1.zstart) ,0,round(m1.zend)])
+% yticks([round(m1.xstart) ,0,round(m1.xend)])
 
 % zlim([m.ystart-3 m.yend+3])
 % xlim([m.zstart-3 m.zend+3])
@@ -173,13 +173,13 @@ view(45,45)
 % xticks([floor(m.zstart) ,0,floor(m.zend)+1])
 % yticks([floor(m.xstart) ,0,floor(m.xend)+1])
 
-zlim([yb1-1 yb2+1])
-xlim([zb1-1 zb2+1])
-ylim([xb1-2 xb2+2])
-
-zticks([round(m2.ystart) round(m2.yend)])
-xticks([round(m2.zstart) ,0,round(m2.zend)])
-yticks([round(m2.xstart) ,0,round(m2.xend)])
+% zlim([yb1-1 yb2+1])
+% xlim([zb1-1 zb2+1])
+% ylim([xb1-2 xb2+2])
+% 
+% zticks([round(m2.ystart) round(m2.yend)])
+% xticks([round(m2.zstart) ,0,round(m2.zend)])
+% yticks([round(m2.xstart) ,0,round(m2.xend)])
 
 title('(b)')
 

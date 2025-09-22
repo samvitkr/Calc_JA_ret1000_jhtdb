@@ -30,8 +30,8 @@ jcond=105
 yc=yv(jcond)+1;
 
 ys=yp(jcond);
-fvgp=sprintf("../data/conditionalp_jcond_omegaz_%03d.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
+fvgp=sprintf("../data/conditionalp_jcond_dudy_%03d.mat",jcond);
+fvgn=sprintf("../data/conditionaln_jcond_dudy_%03d.mat",jcond);
 m1=matfile(fvgp,'Writable',true);
 m2=matfile(fvgn,'Writable',true);
 [nzz, nxx, nyy]=size(m1.lambda2);

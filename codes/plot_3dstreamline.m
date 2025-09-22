@@ -7,9 +7,9 @@ width=1150;
 height=300;
 ut=0.0499;
 dnu=1.0006e-3;
-mU=matfile('../data/JHTDB_RET1000.mat');
-Um=mU.JHTDB_RET1000(:,2);
-Um=Um./Um(end);
+% mU=matfile('../data/JHTDB_RET1000.mat');
+% Um=mU.JHTDB_RET1000(:,2);
+% Um=Um./Um(end);
 
 clear mU
 
@@ -28,7 +28,7 @@ itarget=nx/2+1;
 ktarget=nz/2+1;
 
 % jcond=130;
- jcond=71;
+ jcond=105;
 % jcond=105
 % jcond=71;
  % jcond=54;
@@ -36,8 +36,14 @@ ktarget=nz/2+1;
 yc=yv(jcond)+1;
 
 ycp=yp(jcond);
+%  fvgp=sprintf("../data/conditionalq2_jcond_%03d.mat",jcond);
+%  fvgn=sprintf("../data/conditionalq4_jcond_%03d.mat",jcond);
+% figname=sprintf("isosurf_lines_q2q4_jcond_%03d.fig",jcond);
+
 fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
 fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
+figname=sprintf("isosurf_lines_v_jcond_%03d.fig",jcond);
+
 m1=matfile(fvgp,'Writable',true);
 m2=matfile(fvgn,'Writable',true);
 [nzz, nxx, nyy]=size(m1.lambda2);
@@ -51,7 +57,7 @@ zp=zp(ktarget-wzz:ktarget+wzz);
 % val=0.025;
 l1=-ut^2/yc^2;
 l2=-ut^2/yc^2;
-val=6;
+val=0.5;
 [X,Z,Y]=(meshgrid(xp,zp,yp));
 
 x=permute(X,[2 1 3]);
@@ -67,7 +73,7 @@ omd=sqrt(oxd.^2+oyd.^2+ozd.^2);
 
 
 nld=permute(m1.voz-m1.woy,[2 1 3]);
-ld=permute(m1.lambda2,[2 1 3])./l1;
+ld=permute(m1.Q,[2 1 3]);
 vozd=permute(m1.voz,[2 1 3]);
 woyd=permute(m1.woy,[2 1 3]);
 ud=permute(m1.u,[2 1 3]);
@@ -83,7 +89,7 @@ oyu=permute(m2.dudz-m2.dwdx,[2 1 3]);
 ozu=permute(m2.dvdx-m2.dudy,[2 1 3]);
 omu=sqrt(oxu.^2+oyu.^2+ozu.^2);
 
-lu=permute(m2.lambda2,[2 1 3])./l2;
+lu=permute(m2.Q,[2 1 3]);
 nlu=permute(m2.voz-m2.woy,[2 1 3]);
 vozu=permute(m2.voz,[2 1 3]);
 woyu=permute(m2.woy,[2 1 3]);
@@ -132,20 +138,20 @@ rcouz=rcouz./(rho.*omu);
 omtd=rcodx.*cosmp+rcody.*sinmp;
 omtu=rcoux.*cosmp+rcouy.*sinmp;
 
-xb1=min([m1.xstart m2.xstart]);
-yb1=min([m1.ystart m2.ystart]);
-zb1=min([m1.zstart m2.zstart]);
+% xb1=min([m1.xstart m2.xstart]);
+% yb1=min([m1.ystart m2.ystart]);
+% zb1=min([m1.zstart m2.zstart]);
+% 
+% xb2=max([m1.xend m2.xend]);
+% yb2=max([m1.yend m2.yend]);
+% zb2=max([m1.zend m2.zend]);
 
-xb2=max([m1.xend m2.xend]);
-yb2=max([m1.yend m2.yend]);
-zb2=max([m1.zend m2.zend]);
-
-hslice=surf(linspace(-100,100,100),linspace(-100,100,100),zeros(100));
-rotate(hslice,[-1,0,0],-16);
-xd=get(hslice,'XData');
-yd=get(hslice,'YData');
-zd=get(hslice,'Zdata')+ycp-5;
-delete(hslice)
+% hslice=surf(linspace(-100,100,100),linspace(-100,100,100),zeros(100));
+% rotate(hslice,[-1,0,0],-16);
+% xd=get(hslice,'XData');
+% yd=get(hslice,'YData');
+% zd=get(hslice,'Zdata')+ycp-5;
+% delete(hslice)
 %%
 % % % % % load(fn)
 % % % % % z=Z./dnu;
@@ -171,10 +177,10 @@ ltu=val;
 %load('eddyset_d_j_156.mat')
 %%
 
-  % [startZ,startX,startY]=meshgrid(0,[-80:20:80],ycp);
-   [startZ,startX,startY]=meshgrid(0,0,ycp);
+   [startZ,startX,startY]=meshgrid(0,[-150:25:150],ycp);
+   % [startZ,startX,startY]=meshgrid(0,0,ycp);
 
-z_stop=-m1.zend-10;
+% % z_stop=-m1.zend-10;
 
 vertsv = stream3(z,x,y,ozd,oxd,oyd,startZ,startX,startY);
 vertsvn = stream3(z,x,y,-ozd,-oxd,-oyd,startZ,startX,startY);
@@ -190,14 +196,14 @@ vertsv2n = stream3(z,x,y,-ozu,-oxu,-oyu,startZ,startX,startY);
 
 
 
-% fd=figure;
+ fd=figure;
 % fd.Position=[x1 y1 width height];
 %%
 subplot(1,2,1)
 % --- Colored streamlines by wd ---
 % subplot(1,2,1)
 % title('$(a) \langle v \rangle $ ','Interpreter','latex')
-title('$(a) \omega_{\theta}$','Interpreter','latex')
+title('$(a) Q2 \ Ejection$','Interpreter','latex')
 verts = vertsv;
 hold on
 for k = 1:length(verts)
@@ -209,7 +215,7 @@ for k = 1:length(verts)
     zs = thisStream(:,3);
 
     % Interpolate w along streamline
-    ws = interp3(z,x,y,omtd,xs,ys,zs);  
+    ws = interp3(z,x,y,ozd,xs,ys,zs);  
 
     % Plot colored line
     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
@@ -226,32 +232,42 @@ for k = 1:length(verts)
     zs = thisStream(:,3);
 
     % Interpolate w along streamline
-    ws = interp3(z,x,y,omtd,xs,ys,zs);  
+    ws = interp3(z,x,y,ozd,xs,ys,zs);  
 
     % Plot colored line
     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
 end
-quiver3(0,0,ycp,0,cosmp,sinmp,100)
+% %quiver3(0,0,ycp,0,cosmp,sinmp,100)
 % subplot(1,3,1)
 
-hold on;
+% hold on;
 
-% isosurf=isosurface(z,x,y,ld,ltd);
-% interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-%     isosurf.vertices(:, 1), ...
-%     isosurf.vertices(:, 2), ...
-%     isosurf.vertices(:, 3));
+ isosurf=isosurface(z,x,y,ld,0.5);
+  interpColors = interp3(z, x, y, ozd,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
+      isosurf.vertices(:, 1), ...
+      isosurf.vertices(:, 2), ...
+      isosurf.vertices(:, 3));
+  p = patch(isosurf);
+p.FaceColor = 'interp';        % Interpolated color
+p.EdgeColor = 'none';          % Remove edges
+p.FaceVertexCData = interpColors;    % Assign interpolated colors
+p.FaceAlpha = 0.4; 
+p.FaceLighting="gouraud";
+p.SpecularStrength=0.2;
+p.AmbientStrength=0.6;
+%camlight;                      % Add lighting
+%light('Position', [0, 0, 0.5], 'Style', 'infinite');  % Light above and to the right
+%lighting gouraud; 
+%lightangle(-45,90)
 % cld=floor(max(100*interpColors,[],'all'))/100
-lighting gouraud; 
-% lightangle(-45,90)
  scatter3(0,0,ycp,50,'green','filled')
 %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
   % sl=slice(z,x,y,woyd./ut^2,xd,yd,zd)
 % cld=max(abs(sl.CData(:)));
  %sl=slice(vertsv())
  % set(sl,'FaceColor','interp','FaceAlpha',0.8)
-shading interp
+% shading interp
 % l=streamline(vertsv);
 % set(l, 'Color', 'k'); 
 % set(l,'LineWidth',1);
@@ -262,465 +278,30 @@ hold off
 
 colormap redblue
 axis equal
-view(0,65);
-zlim([yb1-10 yb2+10])
-xlim([-100 100])
-ylim([-100 100])
-% c1=colorbar;
+%view(0,65);
+view(45,45)
+% zlim([yb1-10 yb2+10])
+xlim([-200 200])
+ylim([-200 200])
+ c1=colorbar;
  % clim([-cld cld])
 % c1.Ticks=[-cld, 0, cld];
 %clim([-1 1]*1e-1)
 %clim([-150 150])
-% ylabel(c1," \omega_x^+ ")
+ ylabel(c1," \omega_z H/U ")
 % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
 set(gca,'FontSize',11)
 %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
 xlabel('$z^+$','interpreter','latex','FontSize',14)
 ylabel('$x^+$','interpreter','latex','FontSize',14)
 zlabel('$y^+$','interpreter','latex','FontSize',14)
-clim([-1.5e-1 1.5e-1])
+%clim([-1.5e-1 1.5e-1])
+ clim([-1 1])
 %%
 
 
-% % % subplot(1,3,2)
-% % % title('$(b) -\langle v \rangle \langle \omega_z \rangle$','Interpreter','latex')
-% % % 
-% % % verts = vertsv;
-% % % hold on
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,-vdozd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % verts = vertsvn;
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,-vdozd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % 
-% % % % subplot(1,3,1)
-% % % 
-% % % %hold on;
-% % % %
-% % % % isosurf=isosurface(z,x,y,ld,ltd);
-% % % % interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-% % % %     isosurf.vertices(:, 1), ...
-% % % %     isosurf.vertices(:, 2), ...
-% % % %     isosurf.vertices(:, 3));
-% % % % cld=floor(max(100*interpColors,[],'all'))/100
-% % % lighting gouraud; 
-% % % % lightangle(-45,90)
-% % %  scatter3(0,0,ycp,50,'green','filled')
-% % % %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
-% % %  % sl=slice(z,x,y,woyd./ut^2,xd,yd,zd)
-% % % % cld=max(abs(sl.CData(:)));
-% % %  %sl=slice(vertsv())
-% % %  % set(sl,'FaceColor','interp','FaceAlpha',0.8)
-% % %  % shading interp
-% % % % l=streamline(vertsv);
-% % % % set(l, 'Color', 'k'); 
-% % % % set(l,'LineWidth',1);
-% % % % ln=streamline(vertsvn);
-% % % % set(ln, 'Color', 'k'); 
-% % % % set(ln,'LineWidth',1);
-% % % hold off
-% % % 
-% % % colormap redblue
-% % % axis equal
-% % % view(0,65);
-% % % zlim([yb1-10 yb2+10])
-% % % xlim([-100 100])
-% % % ylim([-100 100])
-% % % % c1=colorbar;
-% % %  % clim([-cld cld])
-% % % % c1.Ticks=[-cld, 0, cld];
-% % % %clim([-1 1]*1e-1)
-% % % %clim([-150 150])
-% % % % ylabel(c1," \omega_x^+ ")
-% % % % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
-% % % set(gca,'FontSize',11)
-% % % %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
-% % % xlabel('$z^+$','interpreter','latex','FontSize',14)
-% % % ylabel('$x^+$','interpreter','latex','FontSize',14)
-% % % zlabel('$y^+$','interpreter','latex','FontSize',14)
-% % % clim([-5e-3 5e-3])
-% % % %%
-% % % 
-% % % subplot(1,3,3)
-% % % title('$(b) -\langle v  \omega_z \rangle$','Interpreter','latex')
-% % % 
-% % % verts = vertsv;
-% % % hold on
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,-vozd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % verts = vertsvn;
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,-vozd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % 
-% % % % subplot(1,3,1)
-% % % 
-% % % %hold on;
-% % % %
-% % % % isosurf=isosurface(z,x,y,ld,ltd);
-% % % % interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-% % % %     isosurf.vertices(:, 1), ...
-% % % %     isosurf.vertices(:, 2), ...
-% % % %     isosurf.vertices(:, 3));
-% % % % cld=floor(max(100*interpColors,[],'all'))/100
-% % % lighting gouraud; 
-% % % % lightangle(-45,90)
-% % %  scatter3(0,0,ycp,50,'green','filled')
-% % % %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
-% % %  % sl=slice(z,x,y,woyd./ut^2,xd,yd,zd)
-% % % % cld=max(abs(sl.CData(:)));
-% % %  %sl=slice(vertsv())
-% % %  % set(sl,'FaceColor','interp','FaceAlpha',0.8)
-% % %  % shading interp
-% % % % l=streamline(vertsv);
-% % % % set(l, 'Color', 'k'); 
-% % % % set(l,'LineWidth',1);
-% % % % ln=streamline(vertsvn);
-% % % % set(ln, 'Color', 'k'); 
-% % % % set(ln,'LineWidth',1);
-% % % hold off
-% % % 
-% % % colormap redblue
-% % % axis equal
-% % % view(0,65);
-% % % zlim([yb1-10 yb2+10])
-% % % xlim([-100 100])
-% % % ylim([-100 100])
-% % % % c1=colorbar;
-% % %  % clim([-cld cld])
-% % % % c1.Ticks=[-cld, 0, cld];
-% % % %clim([-1 1]*1e-1)
-% % % %clim([-150 150])
-% % % % ylabel(c1," \omega_x^+ ")
-% % % % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
-% % % set(gca,'FontSize',11)
-% % % %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
-% % % xlabel('$z^+$','interpreter','latex','FontSize',14)
-% % % ylabel('$x^+$','interpreter','latex','FontSize',14)
-% % % zlabel('$y^+$','interpreter','latex','FontSize',14)
-% % % clim([-5e-3 5e-3])
-% % % 
-% % % 
-% % % 
-% % % %%
-% % % figure
-% % % subplot(1,3,1)
-% % % verts = vertsv;
-% % % hold on
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,wd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % verts = vertsvn;
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,wd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % 
-% % % % subplot(1,3,1)
-% % % 
-% % % %hold on;
-% % % %
-% % % % isosurf=isosurface(z,x,y,ld,ltd);
-% % % % interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-% % % %     isosurf.vertices(:, 1), ...
-% % % %     isosurf.vertices(:, 2), ...
-% % % %     isosurf.vertices(:, 3));
-% % % % cld=floor(max(100*interpColors,[],'all'))/100
-% % % lighting gouraud; 
-% % % % lightangle(-45,90)
-% % %  scatter3(0,0,ycp,50,'green','filled')
-% % % %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
-% % %  % sl=slice(z,x,y,woyd./ut^2,xd,yd,zd)
-% % % % cld=max(abs(sl.CData(:)));
-% % %  %sl=slice(vertsv())
-% % %  % set(sl,'FaceColor','interp','FaceAlpha',0.8)
-% % %  % shading interp
-% % % % l=streamline(vertsv);
-% % % % set(l, 'Color', 'k'); 
-% % % % set(l,'LineWidth',1);
-% % % % ln=streamline(vertsvn);
-% % % % set(ln, 'Color', 'k'); 
-% % % % set(ln,'LineWidth',1);
-% % % hold off
-% % % 
-% % % colormap redblue
-% % % axis equal
-% % % view(0,65);
-% % % zlim([yb1-10 yb2+10])
-% % % xlim([-100 100])
-% % % ylim([-100 100])
-% % % % c1=colorbar;
-% % %  % clim([-cld cld])
-% % % % c1.Ticks=[-cld, 0, cld];
-% % % %clim([-1 1]*1e-1)
-% % % %clim([-150 150])
-% % % % ylabel(c1," \omega_x^+ ")
-% % % % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
-% % % set(gca,'FontSize',11)
-% % % %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
-% % % xlabel('$z^+$','interpreter','latex','FontSize',14)
-% % % ylabel('$x^+$','interpreter','latex','FontSize',14)
-% % % zlabel('$y^+$','interpreter','latex','FontSize',14)
-% % % title('(b) w')
-% % % clim([-5e-3 5e-3])
-% % % 
-% % % %%
-% % % 
-% % % 
-% % % subplot(1,3,2)
-% % % title('$(b) \langle w \rangle \langle \omega_y \rangle$','Interpreter','latex')
-% % % 
-% % % verts = vertsv;
-% % % hold on
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,wdoyd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % verts = vertsvn;
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,wdoyd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % 
-% % % % subplot(1,3,1)
-% % % 
-% % % %hold on;
-% % % %
-% % % % isosurf=isosurface(z,x,y,ld,ltd);
-% % % % interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-% % % %     isosurf.vertices(:, 1), ...
-% % % %     isosurf.vertices(:, 2), ...
-% % % %     isosurf.vertices(:, 3));
-% % % % cld=floor(max(100*interpColors,[],'all'))/100
-% % % lighting gouraud; 
-% % % % lightangle(-45,90)
-% % %  scatter3(0,0,ycp,50,'green','filled')
-% % % %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
-% % %  % sl=slice(z,x,y,woyd./ut^2,xd,yd,zd)
-% % % % cld=max(abs(sl.CData(:)));
-% % %  %sl=slice(vertsv())
-% % %  % set(sl,'FaceColor','interp','FaceAlpha',0.8)
-% % %  % shading interp
-% % % % l=streamline(vertsv);
-% % % % set(l, 'Color', 'k'); 
-% % % % set(l,'LineWidth',1);
-% % % % ln=streamline(vertsvn);
-% % % % set(ln, 'Color', 'k'); 
-% % % % set(ln,'LineWidth',1);
-% % % hold off
-% % % 
-% % % colormap redblue
-% % % axis equal
-% % % view(0,65);
-% % % zlim([yb1-10 yb2+10])
-% % % xlim([-100 100])
-% % % ylim([-100 100])
-% % % % c1=colorbar;
-% % %  % clim([-cld cld])
-% % % % c1.Ticks=[-cld, 0, cld];
-% % % %clim([-1 1]*1e-1)
-% % % %clim([-150 150])
-% % % % ylabel(c1," \omega_x^+ ")
-% % % % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
-% % % set(gca,'FontSize',11)
-% % % %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
-% % % xlabel('$z^+$','interpreter','latex','FontSize',14)
-% % % ylabel('$x^+$','interpreter','latex','FontSize',14)
-% % % zlabel('$y^+$','interpreter','latex','FontSize',14)
-% % % clim([-5e-3 5e-3])
-% % % %%
-% % % 
-% % % subplot(1,3,3)
-% % % title('$(b) \langle w  \omega_y \rangle$','Interpreter','latex')
-% % % 
-% % % verts = vertsv;
-% % % hold on
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,woyd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % verts = vertsvn;
-% % % for k = 1:length(verts)
-% % %     thisStream = verts{k};
-% % %     if isempty(thisStream), continue; end
-% % % 
-% % %     xs = thisStream(:,1);
-% % %     ys = thisStream(:,2);
-% % %     zs = thisStream(:,3);
-% % % 
-% % %     % Interpolate w along streamline
-% % %     ws = interp3(z,x,y,woyd,xs,ys,zs);  
-% % % 
-% % %     % Plot colored line
-% % %     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-% % %         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-% % % end
-% % % 
-% % % % subplot(1,3,1)
-% % % 
-% % % %hold on;
-% % % %
-% % % % isosurf=isosurface(z,x,y,ld,ltd);
-% % % % interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-% % % %     isosurf.vertices(:, 1), ...
-% % % %     isosurf.vertices(:, 2), ...
-% % % %     isosurf.vertices(:, 3));
-% % % % cld=floor(max(100*interpColors,[],'all'))/100
-% % % lighting gouraud; 
-% % % % lightangle(-45,90)
-% % %  scatter3(0,0,ycp,50,'green','filled')
-% % % %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
-% % %  % sl=slice(z,x,y,woyd./ut^2,xd,yd,zd)
-% % % % cld=max(abs(sl.CData(:)));
-% % %  %sl=slice(vertsv())
-% % %  % set(sl,'FaceColor','interp','FaceAlpha',0.8)
-% % %  % shading interp
-% % % % l=streamline(vertsv);
-% % % % set(l, 'Color', 'k'); 
-% % % % set(l,'LineWidth',1);
-% % % % ln=streamline(vertsvn);
-% % % % set(ln, 'Color', 'k'); 
-% % % % set(ln,'LineWidth',1);
-% % % hold off
-% % % 
-% % % colormap redblue
-% % % axis equal
-% % % view(0,65);
-% % % zlim([yb1-10 yb2+10])
-% % % xlim([-100 100])
-% % % ylim([-100 100])
-% % % % c1=colorbar;
-% % %  % clim([-cld cld])
-% % % % c1.Ticks=[-cld, 0, cld];
-% % % %clim([-1 1]*1e-1)
-% % % %clim([-150 150])
-% % % % ylabel(c1," \omega_x^+ ")
-% % % % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
-% % % set(gca,'FontSize',11)
-% % % %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
-% % % xlabel('$z^+$','interpreter','latex','FontSize',14)
-% % % ylabel('$x^+$','interpreter','latex','FontSize',14)
-% % % zlabel('$y^+$','interpreter','latex','FontSize',14)
-% % % clim([-5e-3 5e-3])
-
-
-
-
-%%
-
-% figure
-
-% --- Colored streamlines by wd ---
-%subplot(1,3,1)
 subplot(1,2,2)
-title('$(b)  \omega_{\theta}  $ ','Interpreter','latex')
+title('$(b) Q4 \ Sweep  $ ','Interpreter','latex')
 
 verts = vertsv2;
 hold on
@@ -733,7 +314,7 @@ for k = 1:length(verts)
     zs = thisStream(:,3);
     
     % Interpolate w along streamline
-    ws = interp3(z,x,y,omtu,xs,ys,zs);  
+    ws = interp3(z,x,y,ozu,xs,ys,zs);  
     
     % Plot colored line
     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
@@ -750,25 +331,30 @@ for k = 1:length(verts)
     zs = thisStream(:,3);
     
     % Interpolate w along streamline
-    ws = interp3(z,x,y,omtu,xs,ys,zs);  
+    ws = interp3(z,x,y,ozu,xs,ys,zs);  
     
     % Plot colored line
     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
 end
- quiver3(0,0,ycp,0,cosmp,sinmp,100)
-
-% subplot(1,3,1)
-
-%hold on;
-%
-% isosurf=isosurface(z,x,y,ld,ltd);
-% interpColors = interp3(z, x, y, -vozd./ut^2,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
-%     isosurf.vertices(:, 1), ...
-%     isosurf.vertices(:, 2), ...
-%     isosurf.vertices(:, 3));
-% cld=floor(max(100*interpColors,[],'all'))/100
-lighting gouraud; 
+ % quiver3(0,0,ycp,0,cosmp,sinmp,100)
+ set(gcf,'Renderer','opengl')
+ isosurf=isosurface(z,x,y,lu,0.5);
+  interpColors = interp3(z, x, y, ozu,...wd.*0, ...interpColors = interp3(z, x, y, wd.*0, ...
+      isosurf.vertices(:, 1), ...
+      isosurf.vertices(:, 2), ...
+      isosurf.vertices(:, 3));
+  p = patch(isosurf);
+p.FaceColor = 'interp';        % Interpolated color
+p.EdgeColor = 'none';          % Remove edges
+p.FaceVertexCData = interpColors;    % Assign interpolated colors
+p.FaceAlpha = 0.4;  
+p.FaceLighting="gouraud";
+p.SpecularStrength=0.2;
+p.AmbientStrength=0.6;
+% camlight;                      % Add lighting
+%light('Position', [0, 0, 0.5], 'Style', 'infinite');  % Light above and to the right
+% lighting gouraud; 
 % lightangle(-45,90)
  scatter3(0,0,ycp,50,'green','filled')
 %sl=slice(z,x,y,-vozd./ut^2,[],[],[ys])
@@ -787,23 +373,28 @@ hold off
 
 colormap redblue
 axis equal
-view(0,65);
-zlim([yb1-10 yb2+10])
-xlim([-100 100])
-ylim([-100 100])
-% c1=colorbar;
+view(45,45)
+%view(0,65);
+% zlim([yb1-10 yb2+10])
+xlim([-200 200])
+ylim([-200 200])
+ c1=colorbar;
  % clim([-cld cld])
 % c1.Ticks=[-cld, 0, cld];
 %clim([-1 1]*1e-1)
 %clim([-150 150])
-% ylabel(c1," \omega_x^+ ")
+ ylabel(c1," \omega_z H/U ")
 % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
 set(gca,'FontSize',11)
 %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
 xlabel('$z^+$','interpreter','latex','FontSize',14)
 ylabel('$x^+$','interpreter','latex','FontSize',14)
 zlabel('$y^+$','interpreter','latex','FontSize',14)
-clim([-5e-3 5e-3])
+% clim([-5e-3 5e-3])
+clim([-1 1])
+
+
+saveas(fd,figname)
 %%
 
 

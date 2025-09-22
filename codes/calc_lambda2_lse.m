@@ -2,8 +2,8 @@ jcond=105;
 %fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
 %fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
 
-fvgp=sprintf("../data/conditionalp_jcond_dudy_%03d.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_dudy_%03d.mat",jcond);
+fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
+ fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
 
 
 
@@ -13,7 +13,7 @@ m2=matfile(fvgn,'Writable',true)
 
 %m1=matfile('../data/test.mat','Writable',true)
 %fvgq=[fvgp fvgn];
-for nn=2:2
+for nn=1:2
 
 	switch nn
 	case 1

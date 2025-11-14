@@ -40,9 +40,9 @@ ycp=yp(jcond);
 %  fvgn=sprintf("../data/conditionalq4_jcond_%03d.mat",jcond);
 % figname=sprintf("isosurf_lines_q2q4_jcond_%03d.fig",jcond);
 
-fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
-fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
-figname=sprintf("isosurf_lines_v_jcond_%03d.fig",jcond);
+fvgp=sprintf("../data/conditionalp_jcond_dudysplit_%03d.mat",jcond);
+fvgn=sprintf("../data/conditionaln_jcond_dudysplit_%03d.mat",jcond);
+figname=sprintf("isosurf_v_dudy_jcond_%03d.fig",jcond);
 
 m1=matfile(fvgp,'Writable',true);
 m2=matfile(fvgn,'Writable',true);
@@ -206,38 +206,38 @@ subplot(1,2,1)
 title('$(a) Q2 \ Ejection$','Interpreter','latex')
 verts = vertsv;
 hold on
-for k = 1:length(verts)
-    thisStream = verts{k};
-    if isempty(thisStream), continue; end
-
-    xs = thisStream(:,1);
-    ys = thisStream(:,2);
-    zs = thisStream(:,3);
-
-    % Interpolate w along streamline
-    ws = interp3(z,x,y,ozd,xs,ys,zs);  
-
-    % Plot colored line
-    surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-        'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-end
-sd = [ys,zs];
-verts = vertsvn;
-for k = 1:length(verts)
-    thisStream = verts{k};
-    if isempty(thisStream), continue; end
-
-    xs = thisStream(:,1);
-    ys = thisStream(:,2);
-    zs = thisStream(:,3);
-
-    % Interpolate w along streamline
-    ws = interp3(z,x,y,ozd,xs,ys,zs);  
-
-    % Plot colored line
-    surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-        'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-end
+% for k = 1:length(verts)
+%     thisStream = verts{k};
+%     if isempty(thisStream), continue; end
+% 
+%     xs = thisStream(:,1);
+%     ys = thisStream(:,2);
+%     zs = thisStream(:,3);
+% 
+%     % Interpolate w along streamline
+%     ws = interp3(z,x,y,ozd,xs,ys,zs);  
+% 
+%     % Plot colored line
+%     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
+%         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
+% end
+% sd = [ys,zs];
+% verts = vertsvn;
+% for k = 1:length(verts)
+%     thisStream = verts{k};
+%     if isempty(thisStream), continue; end
+% 
+%     xs = thisStream(:,1);
+%     ys = thisStream(:,2);
+%     zs = thisStream(:,3);
+% 
+%     % Interpolate w along streamline
+%     ws = interp3(z,x,y,ozd,xs,ys,zs);  
+% 
+%     % Plot colored line
+%     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
+%         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
+% end
 % %quiver3(0,0,ycp,0,cosmp,sinmp,100)
 % subplot(1,3,1)
 
@@ -252,7 +252,7 @@ end
 p.FaceColor = 'interp';        % Interpolated color
 p.EdgeColor = 'none';          % Remove edges
 p.FaceVertexCData = interpColors;    % Assign interpolated colors
-p.FaceAlpha = 0.4; 
+p.FaceAlpha = 1; 
 p.FaceLighting="gouraud";
 p.SpecularStrength=0.2;
 p.AmbientStrength=0.6;
@@ -283,12 +283,12 @@ view(45,45)
 % zlim([yb1-10 yb2+10])
 xlim([-200 200])
 ylim([-200 200])
- c1=colorbar;
+ % c1=colorbar;
  % clim([-cld cld])
 % c1.Ticks=[-cld, 0, cld];
 %clim([-1 1]*1e-1)
 %clim([-150 150])
- ylabel(c1," \omega_z H/U ")
+ % ylabel(c1," \omega_z H/U ")
 % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
 set(gca,'FontSize',11)
 %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)
@@ -305,38 +305,38 @@ title('$(b) Q4 \ Sweep  $ ','Interpreter','latex')
 
 verts = vertsv2;
 hold on
-for k = 1:length(verts)
-    thisStream = verts{k};
-    if isempty(thisStream), continue; end
-    
-    xs = thisStream(:,1);
-    ys = thisStream(:,2);
-    zs = thisStream(:,3);
-    
-    % Interpolate w along streamline
-    ws = interp3(z,x,y,ozu,xs,ys,zs);  
-    
-    % Plot colored line
-    surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-        'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-end
-su = [ys,zs];
-verts = vertsv2n;
-for k = 1:length(verts)
-    thisStream = verts{k};
-    if isempty(thisStream), continue; end
-    
-    xs = thisStream(:,1);
-    ys = thisStream(:,2);
-    zs = thisStream(:,3);
-    
-    % Interpolate w along streamline
-    ws = interp3(z,x,y,ozu,xs,ys,zs);  
-    
-    % Plot colored line
-    surface([xs xs],[ys ys],[zs zs],[ws ws], ...
-        'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
-end
+% for k = 1:length(verts)
+%     thisStream = verts{k};
+%     if isempty(thisStream), continue; end
+% 
+%     xs = thisStream(:,1);
+%     ys = thisStream(:,2);
+%     zs = thisStream(:,3);
+% 
+%     % Interpolate w along streamline
+%     ws = interp3(z,x,y,ozu,xs,ys,zs);  
+% 
+%     % Plot colored line
+%     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
+%         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
+% end
+% su = [ys,zs];
+% verts = vertsv2n;
+% for k = 1:length(verts)
+%     thisStream = verts{k};
+%     if isempty(thisStream), continue; end
+% 
+%     xs = thisStream(:,1);
+%     ys = thisStream(:,2);
+%     zs = thisStream(:,3);
+% 
+%     % Interpolate w along streamline
+%     ws = interp3(z,x,y,ozu,xs,ys,zs);  
+% 
+%     % Plot colored line
+%     surface([xs xs],[ys ys],[zs zs],[ws ws], ...
+%         'FaceColor','none','EdgeColor','interp','LineWidth',1.5);
+% end
  % quiver3(0,0,ycp,0,cosmp,sinmp,100)
  set(gcf,'Renderer','opengl')
  isosurf=isosurface(z,x,y,lu,0.5);
@@ -348,7 +348,7 @@ end
 p.FaceColor = 'interp';        % Interpolated color
 p.EdgeColor = 'none';          % Remove edges
 p.FaceVertexCData = interpColors;    % Assign interpolated colors
-p.FaceAlpha = 0.4;  
+p.FaceAlpha = 1;  
 p.FaceLighting="gouraud";
 p.SpecularStrength=0.2;
 p.AmbientStrength=0.6;
@@ -378,12 +378,12 @@ view(45,45)
 % zlim([yb1-10 yb2+10])
 xlim([-200 200])
 ylim([-200 200])
- c1=colorbar;
+ % c1=colorbar;
  % clim([-cld cld])
 % c1.Ticks=[-cld, 0, cld];
 %clim([-1 1]*1e-1)
 %clim([-150 150])
- ylabel(c1," \omega_z H/U ")
+ % ylabel(c1," \omega_z H/U ")
 % ylabel(c1,"v \omega_z /(-u_{\tau}^2/H)")
 set(gca,'FontSize',11)
 %ylabel(c,"$H\omega_x/u_{\tau}$",'interpreter','latex','FontSize',14)

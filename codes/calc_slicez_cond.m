@@ -7,27 +7,27 @@ Ny=256;
 lx=8*pi;
 lz=3*pi;
 ret=1000;
+
+jcond=105;
+jc=jcond;
+%fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
+%fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
+% for counter = 1:1
+fvgp=sprintf("../data/conditionalp_jcond_omegaz_%03d.mat",jcond);
+
+ fvgp=sprintf("../data/conditionaln_jcond_dudy_%03d.mat",jcond);
+% fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
+%fvgp=sprintf("../data/conditionalp_dudyinst_jcond_%03d_counter_%03d.mat",jcond,counter);
+m=matfile(fvgp);
+ % mu=matfile(fvgn,'Writable',true);
+[nzz, nxx, nyy]=size(m.lambda2);
+wzz=(nzz-1)/2;
+wxx=(nxx-1)/2;
 xp=(lx*[0:nx-1]/nx-lx/2);
 zp=(lz*[0:nz-1]/nz-lz/2);
 yp=(yv(1:Ny)'+1);
 itarget=nx/2+1;
 ktarget=nz/2+1;
-jcond=105;
-jc=jcond;
-%fvgp=sprintf('../data/lsevp_field_tot_j_%03d.mat',jcond)
-%fvgn=sprintf('../data/lsevn_field_tot_j_%03d.mat',jcond)
-
-fvgp=sprintf("../data/conditionalp_jcond_omegaz_%03d.mat",jcond);
-
-% fvgp=sprintf("../data/conditionalp_jcond_1_%03d.mat",jcond);
-% fvgn=sprintf("../data/conditionaln_jcond_1_%03d.mat",jcond);
-
-m=matfile(fvgp,'Writable',true);
- % mu=matfile(fvgn,'Writable',true);
-[nzz, nxx, nyy]=size(m.lambda2);
-wzz=(nzz-1)/2;
-wxx=(nxx-1)/2;
-
 xp=xp(itarget-wxx:itarget+wxx);
 zp=zp(ktarget-wzz:ktarget+wzz);
 
@@ -41,7 +41,8 @@ kslice=wzz+1;
 xp(islice)
 % fx=sprintf('../data/lse_zslice_cond_j_%03d.mat',jcond)
 
- fx=sprintf('../data/lse_zslice_oz_cond_j_%03d.mat',jcond)
+ % fx=sprintf('../data/conditionalp_dudy_zslice_j_%03d_counter_%03d.mat',jcond,counter)
+fx=sprintf('../data/conditionaln_dudy_zslice_j_%03d.mat',jcond)
 
 %fx=sprintf('../data/lse_xslice_cond_i_%03d_j_%03d.mat',islice,jcond)
 %	fx=sprintf('../data/lse_xsliceset_j_%03d.mat',jcond)
@@ -142,6 +143,10 @@ xp(islice)
 	mx.X=X;
 	mx.Y=Y;
 
+
+    % clear mx
+    % clear n
+% end
     %mx.u2d=u2d;
     %mx.v2d=v2d;
     %mx.w2d=w2d;

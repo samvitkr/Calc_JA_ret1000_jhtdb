@@ -69,6 +69,7 @@ rot_spat = @(x) flip(flip(x, 3), 1);
 
 % Main Time Loop
 for time=tstart:tstep:tend
+	time
     if time == 3 || time == 4
         fprintf('Skipping corrupted time step %d...\n', time);
         continue;
@@ -77,36 +78,36 @@ for time=tstart:tstep:tend
     % Load Data Blocks
     fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time);
     m=matfile(fvel);
-    ufieldb=single(permute(m.ufield(1:Ny/2,:,:),[3 2 1])); ufieldt=single(rot_spat(permute(m.ufield(Ny/2+1:end,:,:),[3 2 1])));
-    vfieldb=single(permute(m.vfield(1:Ny/2,:,:),[3 2 1])); vfieldt=-single(rot_spat(permute(m.vfield(Ny/2+1:end,:,:),[3 2 1])));
-    wfieldb=single(permute(m.wfield(1:Ny/2,:,:),[3 2 1])); wfieldt=-single(rot_spat(permute(m.wfield(Ny/2+1:end,:,:),[3 2 1])));
+    ufieldb=single(permute(m.ufield(1:Ny/2,:,:),[3 2 1]));% ufieldt=single(rot_spat(permute(m.ufield(Ny/2+1:end,:,:),[3 2 1])));
+    vfieldb=single(permute(m.vfield(1:Ny/2,:,:),[3 2 1]));% vfieldt=-single(rot_spat(permute(m.vfield(Ny/2+1:end,:,:),[3 2 1])));
+    wfieldb=single(permute(m.wfield(1:Ny/2,:,:),[3 2 1]));% wfieldt=-single(rot_spat(permute(m.wfield(Ny/2+1:end,:,:),[3 2 1])));
     clear m
 
     mgx=matfile(sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradx_%03d.mat",time));
-    dudxb=single(permute(mgx.dudx(1:Ny/2,:,:),[3 2 1])); dudxt=single(rot_spat(permute(mgx.dudx(Ny/2+1:end,:,:),[3 2 1])));
-    dvdxb=single(permute(mgx.dvdx(1:Ny/2,:,:),[3 2 1])); dvdxt=-single(rot_spat(permute(mgx.dvdx(Ny/2+1:end,:,:),[3 2 1])));
-    dwdxb=single(permute(mgx.dwdx(1:Ny/2,:,:),[3 2 1])); dwdxt=-single(rot_spat(permute(mgx.dwdx(Ny/2+1:end,:,:),[3 2 1])));
+    dudxb=single(permute(mgx.dudx(1:Ny/2,:,:),[3 2 1]));% dudxt=single(rot_spat(permute(mgx.dudx(Ny/2+1:end,:,:),[3 2 1])));
+    dvdxb=single(permute(mgx.dvdx(1:Ny/2,:,:),[3 2 1]));% dvdxt=-single(rot_spat(permute(mgx.dvdx(Ny/2+1:end,:,:),[3 2 1])));
+    dwdxb=single(permute(mgx.dwdx(1:Ny/2,:,:),[3 2 1]));% dwdxt=-single(rot_spat(permute(mgx.dwdx(Ny/2+1:end,:,:),[3 2 1])));
     clear mgx
 
     mgy=matfile(sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgrady_%03d.mat",time));
-    dudyb=single(permute(mgy.dudy(1:Ny/2,:,:),[3 2 1])); dudyt=-single(rot_spat(permute(mgy.dudy(Ny/2+1:end,:,:),[3 2 1])));
-    dvdyb=single(permute(mgy.dvdy(1:Ny/2,:,:),[3 2 1])); dvdyt=single(rot_spat(permute(mgy.dvdy(Ny/2+1:end,:,:),[3 2 1])));
-    dwdyb=single(permute(mgy.dwdy(1:Ny/2,:,:),[3 2 1])); dwdyt=single(rot_spat(permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1])));
+    dudyb=single(permute(mgy.dudy(1:Ny/2,:,:),[3 2 1]));% dudyt=-single(rot_spat(permute(mgy.dudy(Ny/2+1:end,:,:),[3 2 1])));
+    dvdyb=single(permute(mgy.dvdy(1:Ny/2,:,:),[3 2 1]));% dvdyt=single(rot_spat(permute(mgy.dvdy(Ny/2+1:end,:,:),[3 2 1])));
+    dwdyb=single(permute(mgy.dwdy(1:Ny/2,:,:),[3 2 1]));% dwdyt=single(rot_spat(permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1])));
     clear mgy
 
     mgz=matfile(sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradz_%03d.mat",time));
-    dudzb=single(permute(mgz.dudz(1:Ny/2,:,:),[3 2 1])); dudzt=-single(rot_spat(permute(mgz.dudz(Ny/2+1:end,:,:),[3 2 1])));
-    dvdzb=single(permute(mgz.dvdz(1:Ny/2,:,:),[3 2 1])); dvdzt=single(rot_spat(permute(mgz.dvdz(Ny/2+1:end,:,:),[3 2 1])));
-    dwdzb=single(permute(mgz.dwdz(1:Ny/2,:,:),[3 2 1])); dwdzt=single(rot_spat(permute(mgz.dwdz(Ny/2+1:end,:,:),[3 2 1])));
+    dudzb=single(permute(mgz.dudz(1:Ny/2,:,:),[3 2 1]));% dudzt=-single(rot_spat(permute(mgz.dudz(Ny/2+1:end,:,:),[3 2 1])));
+    dvdzb=single(permute(mgz.dvdz(1:Ny/2,:,:),[3 2 1]));% dvdzt=single(rot_spat(permute(mgz.dvdz(Ny/2+1:end,:,:),[3 2 1])));
+    dwdzb=single(permute(mgz.dwdz(1:Ny/2,:,:),[3 2 1]));% dwdzt=single(rot_spat(permute(mgz.dwdz(Ny/2+1:end,:,:),[3 2 1])));
     clear mgz
 
     mt=matfile(sprintf("/vast/geyink1/skumar67/Ret_1000_data/Transfer_%03d.mat",time));
-    vozb=single(permute(mt.voz(1:Ny/2,:,:),[3 2 1])); vozt=single(rot_spat(permute(mt.voz(Ny/2+1:end,:,:),[3 2 1])));
-    woyb=single(permute(mt.woy(1:Ny/2,:,:),[3 2 1])); woyt=single(rot_spat(permute(mt.woy(Ny/2+1:end,:,:),[3 2 1])));
+    vozb=single(permute(mt.voz(1:Ny/2,:,:),[3 2 1]));% vozt=single(rot_spat(permute(mt.voz(Ny/2+1:end,:,:),[3 2 1])));
+    woyb=single(permute(mt.woy(1:Ny/2,:,:),[3 2 1]));% woyt=single(rot_spat(permute(mt.woy(Ny/2+1:end,:,:),[3 2 1])));
     clear mt
 
     U_mean_b = mean(ufieldb, [1 2]); dudy_mean_b = mean(dudyb, [1 2]);
-    U_mean_t = mean(ufieldt, [1 2]); dudy_mean_t = mean(dudyt, [1 2]);
+%   U_mean_t = mean(ufieldt, [1 2]); dudy_mean_t = mean(dudyt, [1 2]);
 
     for k = 1:num_layers
         jcond = configs(k, 1); xbox = configs(k, 2); zbox = configs(k, 3);
@@ -115,18 +116,19 @@ for time=tstart:tstep:tend
         wini=round(xbox/dx); wink=round(zbox/dz);
         winiav=round(0.5*wini); winkav=round(0.5*wink);
 
-        vb = vfieldb(:,:,jcond); vt = vfieldt(:,:,jcond);
+        vb = vfieldb(:,:,jcond); %vt = vfieldt(:,:,jcond);
         upb = ufieldb(:,:,jcond) - U_mean_b(1,1,jcond);
-        upt = ufieldt(:,:,jcond) - U_mean_t(1,1,jcond);
+       %upt = ufieldt(:,:,jcond) - U_mean_t(1,1,jcond);
 
         uvb_q2 = upb.*vb.*(vb>0); vj_q2 = uvb_q2.*(uvb_q2 < -vthreshold(k));
         uvb_q4 = upb.*vb.*(vb<0); vj_q4 = uvb_q4.*(uvb_q4 < -vthreshold(k));
-        uvt_q2 = upt.*vt.*(vt>0); vjt_q2 = uvt_q2.*(uvt_q2 < -vthreshold(k));
-        uvt_q4 = upt.*vt.*(vt<0); vjt_q4 = uvt_q4.*(uvt_q4 < -vthreshold(k));
+       %uvt_q2 = upt.*vt.*(vt>0); vjt_q2 = uvt_q2.*(uvt_q2 < -vthreshold(k));
+       %uvt_q4 = upt.*vt.*(vt<0); vjt_q4 = uvt_q4.*(uvt_q4 < -vthreshold(k));
 
         for eType = 1:2
-            if eType == 1, vjc_bot = vj_q2; vjc_top = vjt_q2;
-            else, vjc_bot = vj_q4; vjc_top = vjt_q4; end
+            if eType == 1, vjc_bot = vj_q2; %vjc_top = vjt_q2;
+            else, vjc_bot = vj_q4; %vjc_top = vjt_q4; 
+	    end
 
             % --- Process Bottom Events ---
             [bot_k, bot_i] = extract_events(vjc_bot, vthreshold(k), wink, wini, Nz, Nx);
@@ -157,39 +159,39 @@ for time=tstart:tstep:tend
                 dudypn{eType,k} = dudypn{eType,k} + (dudyb(z_idx_av, x_idx_av, :) - dudy_mean_b);
             end
             
-            % --- Process Top Events ---
-            [top_k, top_i] = extract_events(vjc_top, vthreshold(k), wink, wini, Nz, Nx);
-            
-            for e = 1:length(top_k)
-                kloc = top_k(e); iloc = top_i(e);
-                kloc_global = Nz - kloc + 1; % Log the global un-flipped z-coordinate for reference
-                
-                event_location{eType,k} = [event_location{eType,k}; kloc_global iloc jc time];
-                counter(eType,k) = counter(eType,k) + 1;
-                
-                z_idx_av = mod((kloc - winkav : kloc + winkav) - 1, Nz) + 1;
-                x_idx_av = mod((iloc - winiav : iloc + winiav) - 1, Nx) + 1;
-                
-                un{eType,k}     = un{eType,k}     + ufieldt(z_idx_av, x_idx_av, :);
-                vn{eType,k}     = vn{eType,k}     + vfieldt(z_idx_av, x_idx_av, :);
-                wn{eType,k}     = wn{eType,k}     + wfieldt(z_idx_av, x_idx_av, :);
-                dudxn{eType,k}  = dudxn{eType,k}  + dudxt(z_idx_av, x_idx_av, :);
-                dvdxn{eType,k}  = dvdxn{eType,k}  + dvdxt(z_idx_av, x_idx_av, :);
-                dwdxn{eType,k}  = dwdxn{eType,k}  + dwdxt(z_idx_av, x_idx_av, :);
-                dudyn{eType,k}  = dudyn{eType,k}  + dudyt(z_idx_av, x_idx_av, :);
-                dvdyn{eType,k}  = dvdyn{eType,k}  + dvdyt(z_idx_av, x_idx_av, :);
-                dwdyn{eType,k}  = dwdyn{eType,k}  + dwdyt(z_idx_av, x_idx_av, :);
-                dudzn{eType,k}  = dudzn{eType,k}  + dudzt(z_idx_av, x_idx_av, :);
-                dvdzn{eType,k}  = dvdzn{eType,k}  + dvdzt(z_idx_av, x_idx_av, :);
-                dwdzn{eType,k}  = dwdzn{eType,k}  + dwdzt(z_idx_av, x_idx_av, :);
-                vozn{eType,k}   = vozn{eType,k}   + vozt(z_idx_av, x_idx_av, :);
-                woyn{eType,k}   = woyn{eType,k}   + woyt(z_idx_av, x_idx_av, :);
-                upn{eType,k}    = upn{eType,k}    + (ufieldt(z_idx_av, x_idx_av, :) - U_mean_t);
-                dudypn{eType,k} = dudypn{eType,k} + (dudyt(z_idx_av, x_idx_av, :) - dudy_mean_t);
-            end
+           % % --- Process Top Events ---
+           % [top_k, top_i] = extract_events(vjc_top, vthreshold(k), wink, wini, Nz, Nx);
+           % 
+           % for e = 1:length(top_k)
+           %     kloc = top_k(e); iloc = top_i(e);
+           %     kloc_global = Nz - kloc + 1; % Log the global un-flipped z-coordinate for reference
+           %     
+           %     event_location{eType,k} = [event_location{eType,k}; kloc_global iloc jc time];
+           %     counter(eType,k) = counter(eType,k) + 1;
+           %     
+           %     z_idx_av = mod((kloc - winkav : kloc + winkav) - 1, Nz) + 1;
+           %     x_idx_av = mod((iloc - winiav : iloc + winiav) - 1, Nx) + 1;
+           %     
+           %     un{eType,k}     = un{eType,k}     + ufieldt(z_idx_av, x_idx_av, :);
+           %     vn{eType,k}     = vn{eType,k}     + vfieldt(z_idx_av, x_idx_av, :);
+           %     wn{eType,k}     = wn{eType,k}     + wfieldt(z_idx_av, x_idx_av, :);
+           %     dudxn{eType,k}  = dudxn{eType,k}  + dudxt(z_idx_av, x_idx_av, :);
+           %     dvdxn{eType,k}  = dvdxn{eType,k}  + dvdxt(z_idx_av, x_idx_av, :);
+           %     dwdxn{eType,k}  = dwdxn{eType,k}  + dwdxt(z_idx_av, x_idx_av, :);
+           %     dudyn{eType,k}  = dudyn{eType,k}  + dudyt(z_idx_av, x_idx_av, :);
+           %     dvdyn{eType,k}  = dvdyn{eType,k}  + dvdyt(z_idx_av, x_idx_av, :);
+           %     dwdyn{eType,k}  = dwdyn{eType,k}  + dwdyt(z_idx_av, x_idx_av, :);
+           %     dudzn{eType,k}  = dudzn{eType,k}  + dudzt(z_idx_av, x_idx_av, :);
+           %     dvdzn{eType,k}  = dvdzn{eType,k}  + dvdzt(z_idx_av, x_idx_av, :);
+           %     dwdzn{eType,k}  = dwdzn{eType,k}  + dwdzt(z_idx_av, x_idx_av, :);
+           %     vozn{eType,k}   = vozn{eType,k}   + vozt(z_idx_av, x_idx_av, :);
+           %     woyn{eType,k}   = woyn{eType,k}   + woyt(z_idx_av, x_idx_av, :);
+           %     upn{eType,k}    = upn{eType,k}    + (ufieldt(z_idx_av, x_idx_av, :) - U_mean_t);
+           %     dudypn{eType,k} = dudypn{eType,k} + (dudyt(z_idx_av, x_idx_av, :) - dudy_mean_t);
+           % end
         end
     end
-    clear ufieldb ufieldt vfieldb vfieldt wfieldb wfieldt dudxb dudxt dvdxb dvdxt dwdxb dwdxt dudyb dudyt dvdyb dvdyt dwdyb dwdyt dudzb dudzt dvdzb dvdzt dwdzb dwdzt vozb vozt woyb woyt
+   %clear ufieldb ufieldt vfieldb vfieldt wfieldb wfieldt dudxb dudxt dvdxb dvdxt dwdxb dwdxt dudyb dudyt dvdyb dvdyt dwdyb dwdyt dudzb dudzt dvdzb dvdzt dwdzb dwdzt vozb vozt woyb woyt
 end
 
 for k = 1:num_layers

@@ -9,18 +9,17 @@ Nz=1536;
 Lx=8*pi;
 Lz=3*pi;
 
-
 %jcond=130;
 %xbox=0.8;
 %zbox=0.6;
 
-jcond=105;
-xbox=0.7;
-zbox=0.4;
+%jcond=105;
+%xbox=0.7;
+%zbox=0.4;
 
-%jcond=71;
-%xbox=0.6;
-%zbox=0.3;
+jcond=71;
+xbox=0.6;
+zbox=0.3;
 
 % jcond=54;
 % xbox=0.5;
@@ -53,12 +52,11 @@ nxav=2*winiav+1;
 event_location=[];
 counter=0;
 vmul=10;
-load('../data/JHTDB_RET1000.mat')
+load('../../data/JHTDB_RET1000.mat')
 uvav=abs((JHTDB_RET1000(:,3))./JHTDB_RET1000(end,2)^2);
 %vrms=sqrt(0.5*(mp.vv(jcond,1)+mp.vv(jc,1)));
 vthreshold=vmul*uvav(jcond)
 clear JHTDB_RET1000  
-
 
 un=	single(zeros(nzav,nxav,Ny/2));
 vn=	single(zeros(nzav,nxav,Ny/2));
@@ -84,6 +82,12 @@ vjav=zeros(Nz,Nx);
 
 for time=tstart:tstep:tend
     	time
+
+	if time == 3 || time == 4
+        fprintf('Skipping corrupted time step %d...\n', time);
+        continue;
+    	end
+
 %    fvel=sprintf("../data/velfields_%07d.mat",time);
 	fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
 	m=matfile(fvel)
@@ -314,7 +318,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../data/conditionalq2_jcond_%03d.mat",jcond);
+fc=sprintf("../../data/conditionalq2_jcond_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

@@ -9,7 +9,6 @@ Nz=1536;
 Lx=8*pi;
 Lz=3*pi;
 
-
 %jcond=130;
 %xbox=0.8;
 %zbox=0.6;
@@ -59,7 +58,6 @@ uvav=abs((JHTDB_RET1000(:,3))./JHTDB_RET1000(end,2)^2);
 vthreshold=vmul*uvav(jcond)
 clear JHTDB_RET1000  
 
-
 un=	single(zeros(nzav,nxav,Ny/2));
 vn=	single(zeros(nzav,nxav,Ny/2));
 wn=	single(zeros(nzav,nxav,Ny/2));
@@ -88,30 +86,46 @@ for time=tstart:tstep:tend
 	if time == 3 || time == 4
         fprintf('Skipping corrupted time step %d...\n', time);
         continue;
-        end
+    	end
 
 %    fvel=sprintf("../data/velfields_%07d.mat",time);
 	fvel=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velfieldpar_%02d.mat",time)
 	m=matfile(fvel)
 %
-size(m.vfield)
-     vb=permute(single(m.vfield(jcond,:,:)),[3 2 1]);
-    vt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
+	size(m.vfield)
+     	vb=permute(single(m.vfield(jcond,:,:)),[3 2 1]);
+    	
+	vt=permute(single(m.vfield(jc,:,:))   ,[3 2 1]);
+	vt=-flip(vt,1);
 
-    ufieldb=single(		permute(m.ufield(1:Ny/2,:,:)	,[3 2 1]));
-    ufieldt=single(	flip(	permute(m.ufield(Ny/2+1:end,:,:),[3 2 1]),3));
-    vfieldb=single(		permute(m.vfield(1:Ny/2,:,:)	,[3 2 1]));
-    vfieldt=single(	flip(	permute(m.vfield(Ny/2+1:end,:,:),[3 2 1]),3));
-    wfieldb=single(		permute(m.wfield(1:Ny/2,:,:)	,[3 2 1]));
-    wfieldt=single(	flip(	permute(m.wfield(Ny/2+1:end,:,:),[3 2 1]),3));
-    clear m
+	ufieldb= single(		permute(m.ufield(1:Ny/2,:,:)	,[3 2 1]));
+	
+	ufieldt= single(	flip(	permute(m.ufield(Ny/2+1:end,:,:),[3 2 1]),3));
+	ufieldt= flip(ufieldt,1);			
+
+ 	vfieldb= single(		permute(m.vfield(1:Ny/2,:,:)	,[3 2 1]));
+ 	
+	vfieldt= single(	flip(	permute(m.vfield(Ny/2+1:end,:,:),[3 2 1]),3));
+	vfieldt= -flip(vfieldt,1);
+
+	wfieldb=single(		permute(m.wfield(1:Ny/2,:,:)	,[3 2 1]));
+	
+	wfieldt=single(	flip(	permute(m.wfield(Ny/2+1:end,:,:),[3 2 1]),3));
+    	wfieldt= -flip(wfieldt,1);
+
+    	clear m
+
 	upb = ufieldb(:,:,jcond)-mean(ufieldb(:,:,jcond),'all');
-	upt = ufieldt(:,:,jcond)-mean(ufieldt(:,:,jcond),'all');
+	
+	upt = flip(ufieldt(:,:,jcond)-mean(ufieldt(:,:,jcond),'all'),1);
+	upt = flip(upt,1);
 
-	uvb = upb.*vb.*(vb<0);
+	uvb = upb.*vb.*(vb>0);
 	uvt = upt.*vt.*(vt>0);
+	
 	vj = uvb.*(uvb<-vthreshold);
-	vjt= uvt.*(uvt>vthreshold);
+	vjt= uvt.*(uvt<-vthreshold);
+
 	fvelgx=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradx_%03d.mat",time);
 	mgx=matfile(fvelgx)
 
@@ -122,6 +136,9 @@ size(m.vfield)
     	dwdxb=single(             permute(mgx.dwdx(1:Ny/2,:,:)    ,[3 2 1]));
     	dwdxt=single(     flip(   permute(mgx.dwdx(Ny/2+1:end,:,:),[3 2 1]),3));
 
+	dudxt =  flip(dudxt,1);
+	dvdxt = -flip(dvdxt,1);
+	dwdxt = -flip(dwdxt,1);
 
 	clear mgx
 
@@ -133,6 +150,11 @@ size(m.vfield)
         dvdyt=single(     flip(   permute(mgy.dvdy(Ny/2+1:end,:,:),[3 2 1]),3));
         dwdyb=single(             permute(mgy.dwdy(1:Ny/2,:,:)    ,[3 2 1]));
         dwdyt=single(     flip(   permute(mgy.dwdy(Ny/2+1:end,:,:),[3 2 1]),3));
+
+	dudyt = -flip(dudyt,1);
+	dvdyt =  flip(dvdyt,1);
+	dwdyt =  flip(dwdyt,1);
+
 	clear mgy
 
         fvelgz=sprintf("/vast/geyink1/skumar67/Ret_1000_data/velgradz_%03d.mat",time);
@@ -143,7 +165,12 @@ size(m.vfield)
         dvdzt=single(     flip(   permute(mgz.dvdz(Ny/2+1:end,:,:),[3 2 1]),3));
         dwdzb=single(             permute(mgz.dwdz(1:Ny/2,:,:)    ,[3 2 1]));
         dwdzt=single(     flip(   permute(mgz.dwdz(Ny/2+1:end,:,:),[3 2 1]),3));
-        clear mgz
+        
+	dudzt=-flip(dudzt,1);
+	dvdzt= flip(dvdzt,1);
+	dwdzt= flip(dwdzt,1);
+
+	clear mgz
 
 	ft=sprintf("/vast/geyink1/skumar67/Ret_1000_data/Transfer_%03d.mat",time);
 	mt=matfile(ft);
@@ -151,6 +178,10 @@ size(m.vfield)
         vozt=single(     flip(   permute(mt.voz(Ny/2+1:end,:,:),[3 2 1]),3));
         woyb=single(             permute(mt.woy(1:Ny/2,:,:)    ,[3 2 1]));
         woyt=single(     flip(   permute(mt.woy(Ny/2+1:end,:,:),[3 2 1]),3));
+
+	vozt = flip(vozt,1);
+	woyt = flip(woyt,1);
+
 	clear mt
 
 %
@@ -240,7 +271,7 @@ size(m.vfield)
 %    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%    top half
     disp('top')
-    [M,I] = max(vjt(:));
+    [M,I] = min(vjt(:));
     [kloc, iloc] = ind2sub(s,I);
     vjc=vjt;
 
@@ -252,7 +283,7 @@ size(m.vfield)
         temp=circshift(vjc,[kdelta idelta]);
         temp(ktarget-wink:ktarget+wink,itarget-wini:itarget+wini)=NaN;
         vjc=circshift(temp,[-kdelta -idelta]);
-        [M,I] = max(vjc(:));
+        [M,I] = min(vjc(:));
         [kloc, iloc] = ind2sub(s,I);
 %
         ufieldt	=circshift( ufieldt	,[kdelta idelta]);
@@ -275,20 +306,20 @@ size(m.vfield)
         woyt	=circshift( woyt 	,[kdelta idelta]);
 
         un=	un	+ufieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        vn=	vn	-vfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        vn=	vn	+vfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
         wn=	wn	+wfieldt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
 
-    	dudxn=dudxn        +dudxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dvdxn=dvdxn        -dvdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dwdxn=dwdxn        +dwdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+    	dudxn=dudxn	+dudxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dvdxn=dvdxn     +dvdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dwdxn=dwdxn     +dwdxt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
 
-        dudyn=dudyn        -dudyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dvdyn=dvdyn        +dvdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dwdyn=dwdyn        -dwdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dudyn=dudyn     +dudyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dvdyn=dvdyn     +dvdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dwdyn=dwdyn     +dwdyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
 
-        dudzn=dudzn        +dudzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dvdzn=dvdzn        -dvdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
-        dwdzn=dwdzn        +dwdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dudzn=dudzn     +dudzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dvdzn=dvdzn     +dvdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
+        dwdzn=dwdzn     +dwdzt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
 
         vozn=	vozn	+vozt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
         woyn=	woyn	+woyt(ktarget-winkav:ktarget+winkav,itarget-winiav:itarget+winiav,:);
@@ -320,7 +351,7 @@ size(m.vfield)
 end
 %counter
 
-fc=sprintf("../../data/conditionalq4_jcond_%03d.mat",jcond);
+fc=sprintf("../../data/conditionalq2_ref_jcond_%03d.mat",jcond);
 %fc=sprintf("../data/test.mat")
 mc=matfile(fc,'Writable',true);
 mc.event=event_location;

@@ -2,17 +2,17 @@ close all;
 clear;
 
 jcset = [47 54 71 105 130];
-%quadrants = {'q2', 'q4'};
-quadrants = {'vpos', 'vneg'};
-for jj = 1:length(jcset)
+quadrants = {'q2', 'q4'};
+%quadrants = {'vpos', 'vneg'};
+for jj = 3:3%1:length(jcset)
     jcond = jcset(jj);
     
-    for q = 1:2
+    for q = 1:1
         quad = quadrants{q};
         fprintf('Calculating %s Lambda2 and Q for jcond = %d...\n', quad, jcond);
         
         % Target the files we just generated
-        file_path = sprintf("../../data/conditional_%s_jcond_%03d.mat", quad, jcond);
+        file_path = sprintf("../../data/conditional%s_jcond_%03d.mat", quad, jcond);
         m = matfile(file_path, 'Writable', true);
         
         % Load all gradients into RAM
